@@ -1,0 +1,21 @@
+{
+  "name": "@colla/web",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build"
+  },
+  "dependencies": {
+    "@colla/shared": "*",
+    "vue": "^3.5.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^6.0.0",
+    "laravel-vite-plugin": "^1.2.0",
+    "sass": "^1.85.0",
+    "typescript": "^5.7.0",
+    "vite": "^8.0.0"
+  }
+}

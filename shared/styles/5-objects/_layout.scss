@@ -1,0 +1,5 @@
+@use '../2-tools/mixins' as *;
+
+.o-container {
+  @include container;
+}

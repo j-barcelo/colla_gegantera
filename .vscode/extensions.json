@@ -1,0 +1,11 @@
+{
+  "recommendations": [
+    "Vue.volar",
+    "dbaeumer.vscode-eslint",
+    "stylelint.vscode-stylelint",
+    "editorconfig.editorconfig",
+    "bmewburn.vscode-intelephense-client",
+    "shufo.vscode-blade-formatter",
+    "glenn2223.live-sass"
+  ]
+}

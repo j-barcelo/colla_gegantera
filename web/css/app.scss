@@ -1,0 +1,17 @@
+// web/css/app.scss
+@use '@shared/styles' as *;
+
+.c-colla-img {
+  width: to-rem(220);
+  height: auto;
+  margin-top: to-rem(24);
+  border-radius: to-rem(16);
+}
+
+.c-api-status {
+  max-width: to-rem(400);
+  padding: to-rem(16);
+  margin: to-rem(24) auto 0;
+  border: to-rem(1) solid #e2e8f0;
+  border-radius: to-rem(6);
+}

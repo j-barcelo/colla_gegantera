@@ -1,0 +1,26 @@
+{
+  "name": "@colla/shared",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Tipus, composables, estils ITCSS i components compartits per a Colles Geganteres",
+  "main": "./src/index.ts",
+  "module": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./styles/*": "./styles/*",
+    "./styles": "./styles/index.scss",
+    "./assets/*": "./assets/*",
+    "./*": "./src/*"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "vue": "^3.5.0"
+  },
+  "devDependencies": {
+    "sass": "^1.85.0",
+    "typescript": "^5.7.0"
+  }
+}

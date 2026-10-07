@@ -1,0 +1,11 @@
+{
+  "extends": "../tsconfig.base.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["js/*"],
+      "@shared/*": ["../shared/src/*"]
+    }
+  },
+  "include": ["js/**/*.ts", "js/**/*.d.ts", "js/**/*.vue"]
+}

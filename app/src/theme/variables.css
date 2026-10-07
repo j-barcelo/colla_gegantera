@@ -1,0 +1,11 @@
+:root {
+  --ion-font-family: var(--font-family-base);
+  --ion-color-primary: var(--color-primary);
+}
+
+html,
+body,
+ion-app,
+ion-content {
+  font-family: var(--ion-font-family);
+}

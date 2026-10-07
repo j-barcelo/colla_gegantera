@@ -1,0 +1,131 @@
+@use 'sass:map';
+@use '../1-settings/variables' as var;
+@use 'functions' as *;
+
+/* ══════════════════════════════════════
+    Breakpoints
+   ══════════════════════════════════════ */
+@mixin breakpoint($breakpoint) {
+  @if not map.has-key(var.$breakpoints, $breakpoint) {
+    @error "El breakpoint '#{$breakpoint}' no existeix.";
+  }
+
+  @media (width >= #{map.get(var.$breakpoints, $breakpoint)}) {
+    @content;
+  }
+}
+
+/* ══════════════════════════════════════
+    Fonts
+   ══════════════════════════════════════ */
+@mixin font($key) {
+  $font-breakpoints: map.get(var.$fonts, $key);
+
+  @if not $font-breakpoints {
+    @error "El font '#{$key}' no existeix.";
+  }
+
+  $base: map.get($font-breakpoints, base);
+
+  @if not $base {
+    @error "El font '#{$key}' no té valors 'base' definits.";
+  }
+
+  font-size: map.get($base, fs);
+  line-height: map.get($base, lh);
+
+  @each $bp, $values in $font-breakpoints {
+    @if $bp != base {
+      @include breakpoint($bp) {
+        font-size: map.get($values, fs);
+        line-height: map.get($values, lh);
+      }
+    }
+  }
+}
+
+/* ══════════════════════════════════════
+    Grid & Layout
+   ══════════════════════════════════════ */
+@mixin container {
+  width: 100%;
+  max-width: var.$container-lg-width;
+  padding-inline: to-rem(20);
+  margin-inline: auto;
+
+  @include breakpoint('lg') {
+    padding-inline: to-rem(60);
+  }
+
+  @include breakpoint('xxl') {
+    padding-inline: to-rem(150);
+  }
+}
+
+@mixin grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  column-gap: to-rem(40);
+
+  @include breakpoint('md') {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  @include breakpoint('xl') {
+    grid-template-columns: repeat(8, 1fr);
+  }
+}
+
+/* ══════════════════════════════════════
+    Buttons
+   ══════════════════════════════════════ */
+@mixin button($color, $background-color, $border-color: transparent, $border-width: 0, $hover-color: null) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: to-rem(60);
+  padding: 0 to-rem(40);
+  font-weight: var.$fw-bold;
+  color: $color;
+  cursor: pointer;
+  background-color: $background-color;
+  border: $border-width solid $border-color;
+  border-radius: var.$border-radius-base;
+  transition: all 0.3s;
+
+  @include font('text-sm');
+
+  &:hover {
+    @if $border-color != transparent and $border-width != 0 {
+      @if $hover-color {
+        color: $hover-color;
+      } @else {
+        color: $color;
+      }
+
+      background-color: $color;
+    } @else {
+      color: $background-color;
+      background-color: $color;
+    }
+  }
+}
+
+@mixin icon-button($color, $background-color) {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: to-rem(60);
+  height: to-rem(60);
+  color: $color;
+  background-color: $background-color;
+  border-radius: var.$border-radius-sm;
+  transition: all 0.3s;
+
+  @include font('text-lg');
+
+  &:hover {
+    color: $background-color;
+    background-color: $color;
+  }
+}

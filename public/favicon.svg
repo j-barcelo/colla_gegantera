@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <circle cx="32" cy="32" r="30" fill="#85144b" />
+  <!-- Corona / Barret de Gegant -->
+  <path d="M18 42 L22 22 L32 30 L42 22 L46 42 Z" fill="#ffdc00" stroke="#ffffff" stroke-width="2" stroke-linejoin="round" />
+  <!-- Detall joia central -->
+  <circle cx="32" cy="36" r="3" fill="#ff4136" />
+</svg>

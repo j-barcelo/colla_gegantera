@@ -1,0 +1,77 @@
+# ==============================================================================
+# MONOREPO GLOBAL (Configuracions d'IDE, sistema operatiu i dependències arrel)
+# ==============================================================================
+node_modules/
+.DS_Store
+Thumbs.db
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+.idea/
+*.local
+
+# Logs globals
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+
+# ==============================================================================
+# BACKEND (Laravel - Regles originals adaptades a la subcarpeta backend/)
+# ==============================================================================
+backend/vendor/
+backend/.env
+backend/.env.backup
+backend/.env.production
+backend/.phpunit.result.cache
+
+# Servidor web i fitxers públics generats
+public/build/
+public/app/
+public/hot
+public/storage
+
+# Storage i memòria cau de Laravel
+backend/storage/*.key
+backend/storage/framework/cache/*
+backend/storage/framework/sessions/*
+backend/storage/framework/views/*
+backend/storage/logs/*
+!backend/storage/framework/cache/.gitignore
+!backend/storage/framework/sessions/.gitignore
+!backend/storage/framework/views/.gitignore
+!backend/storage/logs/.gitignore
+
+# Bases de dades SQLite locals
+backend/database/*.sqlite
+backend/database/*.sqlite-journal
+
+
+# ==============================================================================
+# APP INTERNA (Ionic + Vue + Capacitor - Regles originals adaptades a app/)
+# ==============================================================================
+app/dist/
+app/dist-ssr/
+app/.vite-temp/
+
+# Proves Cypress (captures i vídeos)
+app/cypress/videos/
+app/cypress/screenshots/
+
+# Capacitor (Compilacions i projectes nadius Android / iOS)
+app/android/
+app/ios/
+app/.capacitor/
+
+
+# ==============================================================================
+# WEB PÚBLICA (Blade + Vue + Vite)
+# ==============================================================================
+web/dist/
+web/dist-ssr/
+web/.vite-temp/

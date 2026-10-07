@@ -1,0 +1,78 @@
+@use '../2-tools/functions' as *;
+
+:root {
+  --font-family-base: Rubik, system-ui, -apple-system, sans-serif;
+  --color-primary: #00AAE3;
+}
+
+$font-family-base: var(--font-family-base);
+$color-primary: var(--color-primary);
+
+/* ══════════════════════════════════════
+    Breakpoints
+   ══════════════════════════════════════ */
+$breakpoints: (
+  'xs': to-rem(420),
+  'sm': to-rem(640),
+  'md': to-rem(768),
+  'lg': to-rem(1024),
+  'xl': to-rem(1280),
+  'xxl': to-rem(1450)
+);
+
+/* ══════════════════════════════════════
+    Tipografia
+   ══════════════════════════════════════ */
+$fw-regular: 400;
+$fw-bold: 700;
+
+/* font-size */
+$fs-display: to-rem(110);
+$fs-title-lg: to-rem(68);
+$fs-title-md: to-rem(53);
+$fs-title-sm: to-rem(42);
+$fs-text-lg: to-rem(33);
+$fs-text-md: to-rem(26);
+$fs-text-sm: to-rem(20);
+$fs-base: to-rem(16);
+$fs-small-lg: to-rem(12);
+$fs-small-md: to-rem(10);
+
+/* line-height */
+$lh-display: to-rem(120);
+$lh-title-lg: to-rem(80);
+$lh-title-md: to-rem(60);
+$lh-title-sm: to-rem(60);
+$lh-text-lg: to-rem(40);
+$lh-text-md: to-rem(40);
+$lh-text-sm: to-rem(30);
+$lh-base: to-rem(20);
+$lh-small-lg: to-rem(20);
+$lh-small-md: to-rem(15);
+
+/* font - breakpoints */
+$fonts: (
+  'display': (lg: (fs: $fs-display, lh: $lh-display), base: (fs: $fs-title-md, lh: $lh-title-md)),
+  'title-lg': (lg: (fs: $fs-title-lg, lh: $lh-title-lg), base: (fs: $fs-title-md, lh: $lh-title-md)),
+  'title-md': (lg: (fs: $fs-title-md, lh: $lh-title-md), base: (fs: $fs-text-lg, lh: $lh-text-lg)),
+  'title-sm': (lg: (fs: $fs-title-sm, lh: $lh-title-sm), base: (fs: $fs-text-lg, lh: $lh-text-lg)),
+  'text-lg': (lg: (fs: $fs-text-lg, lh: $lh-text-lg), base: (fs: $fs-text-md, lh: $lh-text-md)),
+  'text-md': (lg: (fs: $fs-text-md, lh: $lh-text-md), base: (fs: $fs-text-sm, lh: $lh-text-sm)),
+  'text-sm': (lg: (fs: $fs-text-sm, lh: $lh-text-sm), base: (fs: $fs-base, lh: $lh-base)),
+  'base': (lg: (fs: $fs-base, lh: $lh-base), base: (fs: $fs-small-lg, lh: $lh-small-lg)),
+  'small': (lg: (fs: $fs-small-lg, lh: $lh-small-lg), base: (fs: $lh-small-md, lh: $lh-small-md))
+);
+
+/* ══════════════════════════════════════
+    Dimensions
+   ══════════════════════════════════════ */
+$container-lg-width: to-rem(1620);
+$container-sm-width: to-rem(790);
+$container-xs-width: to-rem(484);
+
+/* ══════════════════════════════════════
+    Border-radius
+   ══════════════════════════════════════ */
+$border-radius-base: to-rem(20);
+$border-radius-sm: to-rem(15);
+$border-radius-xs: to-rem(10);

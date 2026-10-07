@@ -1,0 +1,26 @@
+# Auto detect text files and perform LF normalization
+* text=auto eol=lf
+
+# Syntax-specific diffs
+*.blade.php diff=html
+*.css diff=css
+*.scss diff=css
+*.html diff=html
+*.md diff=markdown
+*.php diff=php
+*.ts diff=javascript
+*.js diff=javascript
+*.vue diff=html
+
+# Binary files
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.webp binary
+*.gif binary
+*.ico binary
+*.sqlite binary
+*.sqlite-journal binary
+
+# Git export ignore
+/.github export-ignore

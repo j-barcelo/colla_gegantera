@@ -1,0 +1,42 @@
+{
+  "name": "colles-geganteres-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Plataforma integral per a Colles Geganteres (Web pública + App interna + Backend Laravel)",
+  "workspaces": [
+    "shared",
+    "web",
+    "app"
+  ],
+  "scripts": {
+    "dev:web": "npm run dev --workspace=web",
+    "dev:app": "npm run dev --workspace=app",
+    "build:web": "npm run build --workspace=web",
+    "build:app": "npm run build --workspace=app",
+    "build": "npm run build:web && npm run build:app",
+    "lint:js": "eslint .",
+    "lint:js:fix": "eslint . --fix",
+    "lint:css": "stylelint \"{shared,web,app}/**/*.{scss,css,vue}\"",
+    "lint:css:fix": "stylelint \"{shared,web,app}/**/*.{scss,css,vue}\" --fix",
+    "lint:php": "cd backend && php vendor/bin/pint --test . ../web",
+    "lint:php:fix": "cd backend && php vendor/bin/pint . ../web",
+    "lint": "npm run lint:js && npm run lint:css && npm run lint:php",
+    "lint:fix": "npm run lint:js:fix && npm run lint:css:fix && npm run lint:php:fix"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.0.0",
+    "eslint": "^9.20.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-vue": "^10.11.1",
+    "postcss-html": "^1.7.0",
+    "prettier": "^3.0.0",
+    "stylelint": "^16.26.1",
+    "stylelint-config-recess-order": "^7.9.0",
+    "stylelint-config-standard-scss": "^14.0.0",
+    "stylelint-declaration-strict-value": "^1.12.1",
+    "typescript": "^5.7.0",
+    "typescript-eslint": "^8.72.0",
+    "vue-eslint-parser": "^10.4.1"
+  }
+}
