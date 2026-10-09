@@ -37,6 +37,7 @@ const serveSharedAssets = () => ({
 });
 
 export default defineConfig({
+  envDir: path.resolve(__dirname, '../backend'),
   server: {
     fs: {
       allow: ['..'],

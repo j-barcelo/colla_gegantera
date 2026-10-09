@@ -10,6 +10,8 @@
     "app"
   ],
   "scripts": {
+    "dev": "concurrently -k -n \"backend,web,app\" -c \"red,cyan,magenta\" \"npm:dev:backend\" \"npm:dev:web\" \"npm:dev:app\"",
+    "dev:backend": "cd backend && php artisan serve",
     "dev:web": "npm run dev --workspace=web",
     "dev:app": "npm run dev --workspace=app",
     "build:web": "npm run build --workspace=web",
@@ -26,6 +28,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.0.0",
+    "concurrently": "^10.0.6",
     "eslint": "^9.20.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-vue": "^10.11.1",
