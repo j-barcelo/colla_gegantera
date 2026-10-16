@@ -1,12 +1,12 @@
 @use '../2-tools/functions' as *;
 
-:root {
-  --font-family-base: Rubik, system-ui, -apple-system, sans-serif;
-  --color-primary: #00AAE3;
-}
-
-$font-family-base: var(--font-family-base);
-$color-primary: var(--color-primary);
+$ff-base: var(--ff-base);
+$cl-primary: var(--cl-primary);
+$cl-light: var(--cl-light);
+$cl-dark: var(--cl-dark);
+$cl-border: var(--cl-border);
+$cl-border-light: var(--cl-border-light);
+$cl-danger: var(--cl-danger);
 
 /* ══════════════════════════════════════
     Breakpoints
@@ -17,14 +17,14 @@ $breakpoints: (
   'md': to-rem(768),
   'lg': to-rem(1024),
   'xl': to-rem(1280),
-  'xxl': to-rem(1450)
+  'xxl': to-rem(1450),
 );
 
 /* ══════════════════════════════════════
-    Tipografia
+    Tipografia - Font Weights
    ══════════════════════════════════════ */
-$fw-regular: 400;
-$fw-bold: 700;
+$fw-regular: var(--fw-regular);
+$fw-bold: var(--fw-bold);
 
 /* font-size */
 $fs-display: to-rem(110);
@@ -51,6 +51,8 @@ $lh-small-lg: to-rem(20);
 $lh-small-md: to-rem(15);
 
 /* font - breakpoints */
+
+/* prettier-ignore */
 $fonts: (
   'display': (lg: (fs: $fs-display, lh: $lh-display), base: (fs: $fs-title-md, lh: $lh-title-md)),
   'title-lg': (lg: (fs: $fs-title-lg, lh: $lh-title-lg), base: (fs: $fs-title-md, lh: $lh-title-md)),
@@ -60,7 +62,7 @@ $fonts: (
   'text-md': (lg: (fs: $fs-text-md, lh: $lh-text-md), base: (fs: $fs-text-sm, lh: $lh-text-sm)),
   'text-sm': (lg: (fs: $fs-text-sm, lh: $lh-text-sm), base: (fs: $fs-base, lh: $lh-base)),
   'base': (lg: (fs: $fs-base, lh: $lh-base), base: (fs: $fs-small-lg, lh: $lh-small-lg)),
-  'small': (lg: (fs: $fs-small-lg, lh: $lh-small-lg), base: (fs: $lh-small-md, lh: $lh-small-md))
+  'small': (lg: (fs: $fs-small-lg, lh: $lh-small-lg), base: (fs: $fs-small-md, lh: $lh-small-md))
 );
 
 /* ══════════════════════════════════════

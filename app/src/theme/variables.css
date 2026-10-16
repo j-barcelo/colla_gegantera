@@ -1,6 +1,6 @@
 :root {
-  --ion-font-family: var(--font-family-base);
-  --ion-color-primary: var(--color-primary);
+  --ion-font-family: var(--ff-base);
+  --ion-color-primary: var(--cl-primary);
 }
 
 html,

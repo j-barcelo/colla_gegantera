@@ -1,0 +1,52 @@
+@use '../../../styles/2-tools/functions' as *;
+@use '../../../styles/2-tools/mixins' as *;
+
+.c-btn {
+  display: inline-flex;
+  gap: to-rem(8);
+  align-items: center;
+  justify-content: center;
+  padding-block: to-rem(10);
+  padding-inline: to-rem(20);
+  font-family: inherit;
+
+  @include font('base');
+
+  font-weight: var(--fw-bold);
+  color: var(--cl-light);
+  letter-spacing: to-rem(0.5);
+  text-decoration: none;
+  cursor: pointer;
+  background-color: transparent;
+  border: to-rem(2) solid transparent;
+  border-radius: to-rem(6);
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.1s ease;
+
+  @media (prefers-reduced-motion: reduce) {
+    transform: none;
+    transition: none;
+  }
+
+  &:active {
+    transform: scale(0.98);
+
+    @media (prefers-reduced-motion: reduce) {
+      transform: none;
+    }
+  }
+
+  &--outline-light {
+    color: var(--cl-light);
+    background-color: transparent;
+    border-color: var(--cl-light);
+
+    &:hover {
+      color: var(--cl-primary);
+      background-color: var(--cl-light);
+    }
+  }
+}

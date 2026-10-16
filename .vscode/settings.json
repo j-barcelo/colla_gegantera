@@ -1,0 +1,42 @@
+{
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+  "editor.insertSpaces": true,
+  "editor.tabSize": 2,
+  "files.eol": "\n",
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[vue]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[html]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[css]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[scss]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[php]": {
+    "editor.defaultFormatter": "open-southeners.laravel-pint",
+    "editor.tabSize": 4
+  },
+  "laravel-pint.enable": true,
+  "laravel-pint.configPath": "backend/pint.json",
+  "laravel-pint.executablePath": "backend/vendor/bin/pint",
+  "intelephense.environment.phpVersion": "8.3.0",
+  "[blade]": {
+    "editor.defaultFormatter": "shufo.vscode-blade-formatter"
+  },
+  "prettier.singleQuote": true,
+  "prettier.printWidth": 120,
+  "prettier.tabWidth": 2
+}

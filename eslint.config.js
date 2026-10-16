@@ -1,8 +1,8 @@
 import js from '@eslint/js';
+import prettierConfig from 'eslint-config-prettier';
+import pluginVue from 'eslint-plugin-vue';
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
-import pluginVue from 'eslint-plugin-vue';
-import prettierConfig from 'eslint-config-prettier';
 
 export default [
   {
@@ -23,8 +23,8 @@ export default [
       '**/backend/**',
       '**/public/**',
       '**/cypress/**',
-      '**/*.d.ts'
-    ]
+      '**/*.d.ts',
+    ],
   },
   js.configs.recommended,
   ...tseslint.configs.recommended,
@@ -35,17 +35,18 @@ export default [
       parserOptions: {
         parser: tseslint.parser,
         sourceType: 'module',
-        extraFileExtensions: ['.vue']
-      }
-    }
+        extraFileExtensions: ['.vue'],
+      },
+    },
   },
   {
     rules: {
+      'vue/block-order': ['error', { order: ['script', 'template', 'style'] }],
       'vue/multi-word-component-names': 'off',
       'vue/no-deprecated-slot-attribute': 'off',
       '@typescript-eslint/no-explicit-any': 'warn',
-      '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }]
-    }
+      '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
+    },
   },
-  prettierConfig
+  prettierConfig,
 ];

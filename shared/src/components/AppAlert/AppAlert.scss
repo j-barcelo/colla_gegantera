@@ -1,0 +1,33 @@
+@use '../../../styles/2-tools/functions' as *;
+@use '../../../styles/2-tools/mixins' as *;
+
+.c-alert {
+  display: flex;
+  gap: to-rem(12);
+  align-items: center;
+  padding-block: to-rem(14);
+  padding-inline: to-rem(18);
+  margin-block-end: to-rem(16);
+
+  @include font('base');
+
+  font-weight: var(--fw-bold);
+  color: var(--cl-light);
+  background-color: var(--cl-primary);
+  border-radius: to-rem(6);
+
+  &--danger {
+    color: var(--cl-light);
+    background-color: var(--cl-danger);
+  }
+
+  &__icon {
+    flex-shrink: 0;
+
+    @include font('text-sm');
+  }
+
+  &__content {
+    flex: 1 1 auto;
+  }
+}

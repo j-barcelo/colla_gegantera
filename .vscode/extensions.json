@@ -3,8 +3,10 @@
     "Vue.volar",
     "dbaeumer.vscode-eslint",
     "stylelint.vscode-stylelint",
+    "esbenp.prettier-vscode",
     "editorconfig.editorconfig",
     "bmewburn.vscode-intelephense-client",
+    "open-southeners.laravel-pint",
     "shufo.vscode-blade-formatter",
     "glenn2223.live-sass"
   ]

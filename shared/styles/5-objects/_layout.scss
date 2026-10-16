@@ -1,5 +1,13 @@
+@use '../2-tools/functions' as *;
 @use '../2-tools/mixins' as *;
 
 .o-container {
-  @include container;
+  width: 100%;
+  max-width: to-rem(1200);
+  padding-inline: to-rem(20);
+  margin-inline: auto;
+
+  @include breakpoint(md) {
+    padding-inline: to-rem(32);
+  }
 }

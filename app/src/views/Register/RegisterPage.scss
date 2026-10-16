@@ -1,0 +1,12 @@
+@use '@shared/styles' as *;
+@use '../Login/LoginPage';
+
+.c-login--register {
+  .c-login__header {
+    padding-block-end: to-rem(28);
+  }
+
+  .c-login__logo {
+    width: to-rem(260);
+  }
+}

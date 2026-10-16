@@ -1,9 +1,10 @@
 @forward '1-settings/variables';
 @forward '2-tools/functions';
 @forward '2-tools/mixins';
+@use '3-generic/root';
 @use '3-generic/reset';
 @use '3-generic/fonts';
 @use '4-elements/base';
 @use '5-objects/layout';
-@use '6-components/buttons';
+@use '6-components' as *;
 @use '7-utilities/utilities';

@@ -1,3 +1,32 @@
+<script setup lang="ts">
+import gegantsImg from '@shared/assets/images/gegants.webp';
+import { apiFetch } from '@shared/utils/api';
+import { onMounted, ref } from 'vue';
+
+defineProps({
+  name: { type: String, default: '' },
+});
+
+interface MessageResponse {
+  message: string;
+  timestamp: string;
+}
+
+const apiStatus = ref('Connectant amb el backend...');
+const apiTimestamp = ref('');
+
+onMounted(async () => {
+  try {
+    const data = await apiFetch<MessageResponse>('/api/message');
+    apiStatus.value = data.message;
+    apiTimestamp.value = `Timestamp: ${data.timestamp}`;
+  } catch (err: unknown) {
+    apiStatus.value = "No s'ha pogut connectar amb l'API";
+    console.error(err);
+  }
+});
+</script>
+
 <template>
   <div class="c-container">
     <img :src="gegantsImg" alt="Gegants de la Colla" class="c-container__img" width="220" height="220" />
@@ -10,38 +39,6 @@
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-import { ref, onMounted } from "vue";
-import gegantsImg from "@shared/assets/images/gegants.webp";
-import { fetchApiMessage } from "@shared/utils/api";
-
-defineProps({
-  name: {
-    type: String,
-    default: "",
-  },
-});
-
-interface MessageResponse {
-  message: string;
-  timestamp: string;
-}
-
-const apiStatus = ref("Connectant amb el backend...");
-const apiTimestamp = ref("");
-
-onMounted(async () => {
-  try {
-    const data = await fetchApiMessage();
-    apiStatus.value = data.message;
-    apiTimestamp.value = `Timestamp: ${data.timestamp}`;
-  } catch (err: unknown) {
-    apiStatus.value = "No s'ha pogut connectar amb l'API";
-    console.error(err);
-  }
-});
-</script>
 
 <style scoped lang="scss">
 @use '@shared/styles' as *;

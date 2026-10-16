@@ -1,5 +1,7 @@
 @use 'sass:map';
+@use 'sass:meta';
 @use '../1-settings/variables' as var;
+@forward 'functions';
 @use 'functions' as *;
 
 /* ══════════════════════════════════════
@@ -18,27 +20,37 @@
 /* ══════════════════════════════════════
     Fonts
    ══════════════════════════════════════ */
-@mixin font($key) {
-  $font-breakpoints: map.get(var.$fonts, $key);
+@mixin font($key-or-size, $line-height: null) {
+  @if meta.type-of($key-or-size) == 'number' {
+    font-size: $key-or-size;
 
-  @if not $font-breakpoints {
-    @error "El font '#{$key}' no existeix.";
-  }
+    @if $line-height {
+      line-height: $line-height;
+    } @else {
+      line-height: 1.4;
+    }
+  } @else {
+    $font-breakpoints: map.get(var.$fonts, $key-or-size);
 
-  $base: map.get($font-breakpoints, base);
+    @if not $font-breakpoints {
+      @error "El font '#{$key-or-size}' no existeix.";
+    }
 
-  @if not $base {
-    @error "El font '#{$key}' no té valors 'base' definits.";
-  }
+    $base: map.get($font-breakpoints, base);
 
-  font-size: map.get($base, fs);
-  line-height: map.get($base, lh);
+    @if not $base {
+      @error "El font '#{$key-or-size}' no té valors 'base' definits.";
+    }
 
-  @each $bp, $values in $font-breakpoints {
-    @if $bp != base {
-      @include breakpoint($bp) {
-        font-size: map.get($values, fs);
-        line-height: map.get($values, lh);
+    font-size: map.get($base, fs);
+    line-height: map.get($base, lh);
+
+    @each $bp, $values in $font-breakpoints {
+      @if $bp != base {
+        @include breakpoint($bp) {
+          font-size: map.get($values, fs);
+          line-height: map.get($values, lh);
+        }
       }
     }
   }
@@ -73,59 +85,5 @@
 
   @include breakpoint('xl') {
     grid-template-columns: repeat(8, 1fr);
-  }
-}
-
-/* ══════════════════════════════════════
-    Buttons
-   ══════════════════════════════════════ */
-@mixin button($color, $background-color, $border-color: transparent, $border-width: 0, $hover-color: null) {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  height: to-rem(60);
-  padding: 0 to-rem(40);
-  font-weight: var.$fw-bold;
-  color: $color;
-  cursor: pointer;
-  background-color: $background-color;
-  border: $border-width solid $border-color;
-  border-radius: var.$border-radius-base;
-  transition: all 0.3s;
-
-  @include font('text-sm');
-
-  &:hover {
-    @if $border-color != transparent and $border-width != 0 {
-      @if $hover-color {
-        color: $hover-color;
-      } @else {
-        color: $color;
-      }
-
-      background-color: $color;
-    } @else {
-      color: $background-color;
-      background-color: $color;
-    }
-  }
-}
-
-@mixin icon-button($color, $background-color) {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: to-rem(60);
-  height: to-rem(60);
-  color: $color;
-  background-color: $background-color;
-  border-radius: var.$border-radius-sm;
-  transition: all 0.3s;
-
-  @include font('text-lg');
-
-  &:hover {
-    color: $background-color;
-    background-color: $color;
   }
 }
