@@ -1,0 +1,23 @@
+#!/bin/sh
+# Run backend unit tests only when pushing to main or develop.
+# Git feeds one line per ref on stdin: <local ref> <local sha> <remote ref> <remote sha>
+protected=false
+
+while read -r _local_ref _local_sha remote_ref _remote_sha; do
+  case "$remote_ref" in
+    refs/heads/main | refs/heads/develop) protected=true ;;
+  esac
+done
+
+if [ "$protected" = false ]; then
+  exit 0
+fi
+
+echo "Pushing to a protected branch: running tests..."
+root_dir="$(git rev-parse --show-toplevel)"
+cd "$root_dir" || exit 1
+
+if ! npm test; then
+  echo "ERROR: test suite failed. Push aborted."
+  exit 1
+fi

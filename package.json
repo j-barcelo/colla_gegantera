@@ -10,6 +10,13 @@
     "app"
   ],
   "scripts": {
+    "prepare": "git config core.hooksPath .githooks",
+    "test:unit:backend": "cd backend && php artisan test --testsuite=Unit",
+    "test:unit:frontend": "npm run test:unit --workspace=app -- --run",
+    "test:unit": "npm run test:unit:backend && npm run test:unit:frontend",
+    "test:integration": "cd backend && php artisan test --testsuite=Feature",
+    "test:e2e": "npm run test:e2e --workspace=app",
+    "test": "npm run test:unit && npm run test:integration",
     "dev": "concurrently -k -n \"backend,web,app\" -c \"red,cyan,magenta\" \"npm:dev:backend\" \"npm:dev:web\" \"npm:dev:app\"",
     "dev:backend": "cd backend && php artisan serve",
     "dev:web": "npm run dev --workspace=web",
