@@ -4,9 +4,13 @@ $ff-base: var(--ff-base);
 $cl-primary: var(--cl-primary);
 $cl-light: var(--cl-light);
 $cl-dark: var(--cl-dark);
+$cl-text-muted: var(--cl-text-muted);
+$cl-text-subtle: var(--cl-text-subtle);
+$cl-surface-muted: var(--cl-surface-muted);
 $cl-border: var(--cl-border);
 $cl-border-light: var(--cl-border-light);
 $cl-danger: var(--cl-danger);
+$cl-overlay: var(--cl-overlay);
 
 /* ══════════════════════════════════════
     Breakpoints
@@ -24,6 +28,7 @@ $breakpoints: (
     Tipografia - Font Weights
    ══════════════════════════════════════ */
 $fw-regular: var(--fw-regular);
+$fw-semibold: var(--fw-semibold);
 $fw-bold: var(--fw-bold);
 
 /* font-size */

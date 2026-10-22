@@ -2,7 +2,7 @@
 import { computed } from 'vue';
 
 interface Props {
-  variant?: 'outline-light';
+  variant?: 'outline-light' | 'outline-primary' | 'primary' | 'outline';
   type?: 'button' | 'submit' | 'reset';
   disabled?: boolean;
 }

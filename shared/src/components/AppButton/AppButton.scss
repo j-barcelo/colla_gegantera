@@ -2,23 +2,24 @@
 @use '../../../styles/2-tools/mixins' as *;
 
 .c-btn {
+  box-sizing: border-box;
   display: inline-flex;
-  gap: to-rem(8);
+  gap: to-rem(10);
   align-items: center;
   justify-content: center;
-  padding-block: to-rem(10);
-  padding-inline: to-rem(20);
+  min-height: to-rem(40);
+  padding-block: to-rem(8);
+  padding-inline: to-rem(24);
   font-family: inherit;
 
-  @include font('base');
+  @include font('text-sm');
 
-  font-weight: var(--fw-bold);
+  font-weight: var(--fw-semibold);
   color: var(--cl-light);
-  letter-spacing: to-rem(0.5);
   text-decoration: none;
   cursor: pointer;
   background-color: transparent;
-  border: to-rem(2) solid transparent;
+  border: to-rem(1.5) solid transparent;
   border-radius: to-rem(6);
   transition:
     background-color 0.2s ease,
@@ -47,6 +48,37 @@
     &:hover {
       color: var(--cl-primary);
       background-color: var(--cl-light);
+    }
+  }
+
+  &--outline-primary {
+    color: var(--cl-primary);
+    background-color: transparent;
+    border-color: var(--cl-primary);
+
+    &:hover {
+      color: var(--cl-light);
+      background-color: var(--cl-primary);
+    }
+  }
+
+  &--primary {
+    color: var(--cl-light);
+    background-color: var(--cl-primary);
+    border-color: var(--cl-primary);
+
+    &:hover {
+      opacity: 90%;
+    }
+  }
+
+  &--outline {
+    color: var(--cl-text-muted);
+    background-color: var(--cl-light);
+    border-color: var(--cl-border);
+
+    &:hover {
+      background-color: var(--cl-surface-muted);
     }
   }
 }

@@ -13,7 +13,8 @@ class AuthTest extends TestCase {
 
     private const string TEST_EMAIL = 'miquel@geganters.cat';
     private const string TEST_PASSWORD = 'secret1234';
-    private const string TEST_NAME = 'Miquel Pons';
+    private const string TEST_NAME = 'Miquel';
+    private const string TEST_SURNAME = 'Pons';
     private const string TEST_DEVICE = 'Mobile App';
     private const string REGISTER_URL = '/api/register';
     private const string LOGIN_URL = '/api/login';
@@ -22,6 +23,7 @@ class AuthTest extends TestCase {
     public function test_user_can_register_with_valid_data(): void {
         $payload = [
             'name' => self::TEST_NAME,
+            'surname' => self::TEST_SURNAME,
             'email' => self::TEST_EMAIL,
             'password' => self::TEST_PASSWORD,
             'password_confirmation' => self::TEST_PASSWORD,
@@ -32,36 +34,40 @@ class AuthTest extends TestCase {
 
         $response->assertCreated()
             ->assertJsonStructure([
-                'user' => ['id', 'name', 'email'],
+                'user' => ['id', 'name', 'surname', 'email'],
                 'token',
                 'token_type',
             ])
             ->assertJsonPath('user.email', self::TEST_EMAIL)
             ->assertJsonPath('user.name', self::TEST_NAME)
+            ->assertJsonPath('user.surname', self::TEST_SURNAME)
             ->assertJsonPath('token_type', self::BEARER_TOKEN);
 
         $this->assertDatabaseHas('users', [
             'email' => self::TEST_EMAIL,
             'name' => self::TEST_NAME,
+            'surname' => self::TEST_SURNAME,
         ]);
     }
 
     public function test_registration_fails_when_validation_errors_occur(): void {
         $response = $this->postJson(self::REGISTER_URL, [
             'name' => '',
+            'surname' => '',
             'email' => 'not-an-email',
             'password' => 'short',
             'password_confirmation' => 'mismatch',
         ]);
 
-        $response->assertUnprocessable()->assertJsonValidationErrors(['name', 'email', 'password']);
+        $response->assertUnprocessable()->assertJsonValidationErrors(['name', 'surname', 'email', 'password']);
     }
 
     public function test_registration_fails_if_email_is_already_taken(): void {
         User::factory()->create(['email' => 'existing@geganters.cat']);
 
         $response = $this->postJson(self::REGISTER_URL, [
-            'name' => 'Another User',
+            'name' => 'Another',
+            'surname' => 'User',
             'email' => 'existing@geganters.cat',
             'password' => self::TEST_PASSWORD,
             'password_confirmation' => self::TEST_PASSWORD,

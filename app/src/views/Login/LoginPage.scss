@@ -10,7 +10,7 @@
   justify-content: center;
   min-height: 100%;
   padding-block: to-rem(48) to-rem(40);
-  padding-inline: to-rem(24);
+  padding-inline: to-rem(20);
   background-color: var(--cl-primary);
 
   &__header {
@@ -59,7 +59,7 @@
   }
 
   &__link {
-    @include font('base');
+    @include font('text-sm');
 
     font-weight: var(--fw-regular);
     color: var(--cl-light);

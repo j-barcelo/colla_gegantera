@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\LoginRequest;
 use App\Http\Requests\Api\RegisterRequest;
+use App\Http\Requests\Api\UpdatePasswordRequest;
+use App\Http\Requests\Api\UpdateProfileRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
@@ -21,18 +23,12 @@ class AuthController extends Controller {
 
         $user = User::create([
             'name' => $validated['name'],
+            'surname' => $validated['surname'],
             'email' => $validated['email'],
             'password' => Hash::make($validated['password']),
         ]);
 
-        $deviceName = $validated['device_name'] ?? 'auth-token';
-        $token = $user->createToken($deviceName)->plainTextToken;
-
-        return response()->json([
-            'user' => new UserResource($user),
-            'token' => $token,
-            'token_type' => 'Bearer',
-        ], 201);
+        return $this->tokenResponse($user, $validated['device_name'] ?? null, 201);
     }
 
     /**
@@ -49,14 +45,20 @@ class AuthController extends Controller {
             throw ValidationException::withMessages(['email' => [__('auth.failed')]]);
         }
 
-        $deviceName = $validated['device_name'] ?? 'auth-token';
-        $token = $user->createToken($deviceName)->plainTextToken;
+        return $this->tokenResponse($user, $validated['device_name'] ?? null);
+    }
+
+    /**
+     * Build a standardized authentication token JSON response.
+     */
+    private function tokenResponse(User $user, ?string $deviceName, int $status = 200): JsonResponse {
+        $token = $user->createToken($deviceName ?? 'auth-token')->plainTextToken;
 
         return response()->json([
             'user' => new UserResource($user),
             'token' => $token,
             'token_type' => 'Bearer',
-        ]);
+        ], $status);
     }
 
     /**
@@ -73,5 +75,24 @@ class AuthController extends Controller {
      */
     public function me(Request $request): JsonResponse {
         return response()->json(['user' => new UserResource($request->user())]);
+    }
+
+    /**
+     * Update the authenticated user profile.
+     */
+    public function updateProfile(UpdateProfileRequest $request): JsonResponse {
+        $user = $request->user();
+        $user->update($request->validated());
+
+        return response()->json(['user' => new UserResource($user->fresh())]);
+    }
+
+    /**
+     * Update the authenticated user password.
+     */
+    public function updatePassword(UpdatePasswordRequest $request): JsonResponse {
+        $request->user()->update(['password' => Hash::make($request->validated()['password'])]);
+
+        return response()->json(['message' => 'Password updated successfully']);
     }
 }

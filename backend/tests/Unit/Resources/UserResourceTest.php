@@ -12,16 +12,28 @@ class UserResourceTest extends TestCase {
         $user = new User;
         $user->setRawAttributes([
             'id' => 7,
-            'name' => 'Miquel Pons',
+            'name' => 'Miquel',
+            'surname' => 'Pons',
+            'username' => 'mpons',
             'email' => 'miquel@geganters.cat',
+            'phone' => '600123456',
+            'address' => 'Carrer Major 1',
+            'avatar' => 'avatars/miquel.jpg',
         ]);
 
         $data = (new UserResource($user))->toArray(Request::create('/'));
 
-        $this->assertSame(['id', 'name', 'email', 'created_at', 'updated_at'], array_keys($data));
+        $this->assertSame(['id', 'name', 'surname', 'username', 'email',
+            'phone', 'address', 'avatar', 'created_at', 'updated_at',
+        ], array_keys($data));
         $this->assertSame(7, $data['id']);
-        $this->assertSame('Miquel Pons', $data['name']);
+        $this->assertSame('Miquel', $data['name']);
+        $this->assertSame('Pons', $data['surname']);
+        $this->assertSame('mpons', $data['username']);
         $this->assertSame('miquel@geganters.cat', $data['email']);
+        $this->assertSame('600123456', $data['phone']);
+        $this->assertSame('Carrer Major 1', $data['address']);
+        $this->assertSame('avatars/miquel.jpg', $data['avatar']);
     }
 
     public function test_it_returns_null_dates_when_user_is_not_persisted(): void {

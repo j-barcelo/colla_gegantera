@@ -7,7 +7,10 @@ use PHPUnit\Framework\TestCase;
 
 class UserTest extends TestCase {
     public function test_only_profile_fields_are_mass_assignable(): void {
-        $this->assertSame(['name', 'email', 'password'], (new User)->getFillable());
+        $this->assertSame(
+            ['name', 'surname', 'username', 'email', 'phone', 'address', 'avatar', 'password'],
+            (new User)->getFillable(),
+        );
     }
 
     public function test_sensitive_attributes_are_hidden_from_serialization(): void {

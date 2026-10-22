@@ -14,7 +14,11 @@ return [
     'unique' => 'Aquest :attribute ja està registrat.',
     'attributes' => [
         'name' => 'nom',
+        'surname' => 'cognoms',
         'email' => 'correu electrònic',
+        'phone' => 'telèfon',
+        'address' => 'adreça',
+        'current_password' => 'contrasenya actual',
         'password' => 'contrasenya',
         'password_confirmation' => 'confirmació de la contrasenya',
     ],

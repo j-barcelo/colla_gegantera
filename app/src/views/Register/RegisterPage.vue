@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { IonContent, IonIcon, IonPage } from '@ionic/vue';
-import { AppAlert, AppButton, AppInput } from '@shared';
+import { AppAlert, AppButton, AppInput, FORM_MESSAGES, useForm, VALIDATION_MESSAGES, validators } from '@shared';
 import { useAuth } from '@shared/composables/useAuth';
-import { ApiError } from '@shared/utils/api';
 import { alertCircleOutline } from 'ionicons/icons';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
@@ -11,84 +10,33 @@ const router = useRouter();
 const { register, isLoading } = useAuth();
 
 const name = ref('');
+const surname = ref('');
 const email = ref('');
 const password = ref('');
 const passwordConfirmation = ref('');
 
-const nameError = ref('');
-const emailError = ref('');
-const passwordError = ref('');
-const confirmationError = ref('');
-const generalError = ref('');
+const { errors, generalError, registerInput, validate, validateFieldIfTouched, handleServerErrors } = useForm(
+  ['name', 'surname', 'email', 'password', 'password_confirmation'] as const,
+  { fallbackMessage: FORM_MESSAGES.registerFallback },
+);
 
-const nameInputRef = ref<InstanceType<typeof AppInput> | null>(null);
-const emailInputRef = ref<InstanceType<typeof AppInput> | null>(null);
-const passwordInputRef = ref<InstanceType<typeof AppInput> | null>(null);
-const confirmationInputRef = ref<InstanceType<typeof AppInput> | null>(null);
-
-const validateName = (val: string): string => {
-  if (!val.trim()) return "Has d'especificar el teu nom complet";
-  return '';
-};
-
-const validateEmail = (val: string): string => {
-  const trimmed = val.trim();
-  if (!trimmed) return 'No has especificat cap usuari';
-
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!emailRegex.test(trimmed)) return 'El format del correu no és vàlid';
-
-  return '';
-};
-
-const validatePassword = (val: string): string => {
-  if (val.length < 8) return 'La contrasenya ha de tenir com a mínim 8 caràcters';
-  return '';
-};
-
-const validateConfirmation = (val: string): string => {
-  if (!val) return 'Confirma la contrasenya';
-  if (password.value !== val) return 'Les contrasenyes no coincideixen';
-  return '';
-};
+const validateName = validators.required(VALIDATION_MESSAGES.nameRequired);
+const validateSurname = validators.required(VALIDATION_MESSAGES.surnameRequired);
+const validateEmail = validators.email(VALIDATION_MESSAGES.userRequired);
+const validatePassword = validators.password();
+const validateConfirmation = validators.passwordConfirmation(() => password.value);
 
 const onPasswordChange = (): void => {
-  confirmationInputRef.value?.validateIfTouched();
+  validateFieldIfTouched('password_confirmation');
 };
 
-const validateForm = (): boolean => {
-  const isNameValid = nameInputRef.value?.validate() ?? false;
-  const isEmailValid = emailInputRef.value?.validate() ?? false;
-  const isPasswordValid = passwordInputRef.value?.validate() ?? false;
-  const isConfirmationValid = confirmationInputRef.value?.validate() ?? false;
-
-  return isNameValid && isEmailValid && isPasswordValid && isConfirmationValid;
-};
-
-const handleServerErrors = (err: unknown): void => {
-  if (!(err instanceof ApiError)) {
-    generalError.value = "No s'ha pogut connectar amb el servidor.";
-    return;
-  }
-
-  if (err.errors) {
-    nameError.value = err.errors.name?.[0] || '';
-    emailError.value = err.errors.email?.[0] || '';
-    passwordError.value = err.errors.password?.[0] || '';
-    return;
-  }
-
-  generalError.value = err.message || 'Error en completar el registre.';
-};
-
-const handleRegister = async () => {
-  generalError.value = '';
-
-  if (!validateForm()) return;
+const handleRegister = async (): Promise<void> => {
+  if (!validate()) return;
 
   try {
     await register({
       name: name.value.trim(),
+      surname: surname.value.trim(),
       email: email.value.trim(),
       password: password.value,
       password_confirmation: passwordConfirmation.value,
@@ -133,23 +81,35 @@ const handleRegister = async () => {
           <form class="c-login__form" @submit.prevent="handleRegister">
             <AppInput
               id="register-name"
-              ref="nameInputRef"
+              :ref="registerInput('name')"
               v-model="name"
-              v-model:error="nameError"
+              v-model:error="errors.name"
               type="text"
               name="name"
-              autocomplete="name"
-              label="Nom i cognoms"
-              placeholder="Nom i cognoms"
+              label="Nom"
+              placeholder="Nom"
               :disabled="isLoading"
               :validator="validateName"
             />
 
             <AppInput
+              id="register-surname"
+              :ref="registerInput('surname')"
+              v-model="surname"
+              v-model:error="errors.surname"
+              type="text"
+              name="surname"
+              label="Cognoms"
+              placeholder="Cognoms"
+              :disabled="isLoading"
+              :validator="validateSurname"
+            />
+
+            <AppInput
               id="register-email"
-              ref="emailInputRef"
+              :ref="registerInput('email')"
               v-model="email"
-              v-model:error="emailError"
+              v-model:error="errors.email"
               type="email"
               name="email"
               autocomplete="email"
@@ -161,9 +121,9 @@ const handleRegister = async () => {
 
             <AppInput
               id="register-password"
-              ref="passwordInputRef"
+              :ref="registerInput('password')"
               v-model="password"
-              v-model:error="passwordError"
+              v-model:error="errors.password"
               type="password"
               name="password"
               autocomplete="new-password"
@@ -176,9 +136,9 @@ const handleRegister = async () => {
 
             <AppInput
               id="register-password-confirmation"
-              ref="confirmationInputRef"
+              :ref="registerInput('password_confirmation')"
               v-model="passwordConfirmation"
-              v-model:error="confirmationError"
+              v-model:error="errors.password_confirmation"
               type="password"
               name="password_confirmation"
               autocomplete="new-password"

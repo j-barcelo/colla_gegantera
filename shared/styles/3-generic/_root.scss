@@ -1,11 +1,16 @@
 :root {
   --ff-base: 'Rubik', system-ui, -apple-system, sans-serif;
   --fw-regular: 400;
+  --fw-semibold: 600;
   --fw-bold: 700;
   --cl-primary: #00aae3;
   --cl-light: #fff;
   --cl-dark: #000;
+  --cl-text-muted: #64748b;
+  --cl-text-subtle: #94a3b8;
+  --cl-surface-muted: #f1f5f9;
   --cl-border: #cbd5e1;
   --cl-border-light: #e2e8f0;
   --cl-danger: #ef4444;
+  --cl-overlay: rgb(0 0 0 / 70%);
 }

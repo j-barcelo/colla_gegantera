@@ -1,5 +1,12 @@
 import { computed, ref } from 'vue';
-import type { AuthResponse, LoginCredentials, RegisterData, User } from '../types/auth';
+import type {
+  AuthResponse,
+  LoginCredentials,
+  RegisterData,
+  UpdatePasswordData,
+  UpdateProfileData,
+  User,
+} from '../types/auth';
 import { apiFetch, getStoredToken, removeStoredToken, setStoredToken } from '../utils/api';
 
 const currentUser = ref<User | null>(null);
@@ -7,58 +14,54 @@ const currentToken = ref<string | null>(getStoredToken());
 const isLoading = ref<boolean>(false);
 const authError = ref<string | null>(null);
 
-async function login(credentials: LoginCredentials): Promise<AuthResponse> {
+function setSession(response: AuthResponse): void {
+  currentUser.value = response.user;
+  currentToken.value = response.token;
+  setStoredToken(response.token);
+}
+
+function clearSession(): void {
+  currentUser.value = null;
+  currentToken.value = null;
+  removeStoredToken();
+}
+
+async function withAuthLoading<T>(fallbackMessage: string, action: () => Promise<T>): Promise<T> {
   isLoading.value = true;
   authError.value = null;
 
   try {
-    const response = await apiFetch<AuthResponse>('/api/login', {
-      method: 'POST',
-      body: JSON.stringify(credentials),
-    });
-
-    currentUser.value = response.user;
-    currentToken.value = response.token;
-    setStoredToken(response.token);
-
-    return response;
+    return await action();
   } catch (err: unknown) {
-    if (err instanceof Error) {
-      authError.value = err.message;
-    } else {
-      authError.value = 'Ha ocorregut un error durant la identificació.';
-    }
+    authError.value = err instanceof Error ? err.message : fallbackMessage;
     throw err;
   } finally {
     isLoading.value = false;
   }
 }
 
-async function register(data: RegisterData): Promise<AuthResponse> {
-  isLoading.value = true;
-  authError.value = null;
+async function login(credentials: LoginCredentials): Promise<AuthResponse> {
+  return withAuthLoading('Ha ocorregut un error durant la identificació.', async () => {
+    const response = await apiFetch<AuthResponse>('/api/login', {
+      method: 'POST',
+      body: JSON.stringify(credentials),
+    });
 
-  try {
+    setSession(response);
+    return response;
+  });
+}
+
+async function register(data: RegisterData): Promise<AuthResponse> {
+  return withAuthLoading('Ha ocorregut un error durant el registre.', async () => {
     const response = await apiFetch<AuthResponse>('/api/register', {
       method: 'POST',
       body: JSON.stringify(data),
     });
 
-    currentUser.value = response.user;
-    currentToken.value = response.token;
-    setStoredToken(response.token);
-
+    setSession(response);
     return response;
-  } catch (err: unknown) {
-    if (err instanceof Error) {
-      authError.value = err.message;
-    } else {
-      authError.value = 'Ha ocorregut un error durant el registre.';
-    }
-    throw err;
-  } finally {
-    isLoading.value = false;
-  }
+  });
 }
 
 async function logout(): Promise<void> {
@@ -70,9 +73,7 @@ async function logout(): Promise<void> {
       });
     }
   } finally {
-    currentUser.value = null;
-    currentToken.value = null;
-    removeStoredToken();
+    clearSession();
     isLoading.value = false;
   }
 }
@@ -89,14 +90,32 @@ async function fetchUser(): Promise<User | null> {
     currentUser.value = response.user;
     return response.user;
   } catch {
-    // Token caducat o invàlid
-    currentUser.value = null;
-    currentToken.value = null;
-    removeStoredToken();
+    clearSession();
     return null;
   } finally {
     isLoading.value = false;
   }
+}
+
+async function updateProfile(data: UpdateProfileData): Promise<User> {
+  return withAuthLoading("Ha ocorregut un error durant l'actualització del perfil.", async () => {
+    const response = await apiFetch<{ user: User }>('/api/user', {
+      method: 'PUT',
+      body: JSON.stringify(data),
+    });
+
+    currentUser.value = response.user;
+    return response.user;
+  });
+}
+
+async function updatePassword(data: UpdatePasswordData): Promise<{ message: string }> {
+  return withAuthLoading('Ha ocorregut un error durant el canvi de contrasenya.', async () => {
+    return apiFetch<{ message: string }>('/api/user/password', {
+      method: 'PUT',
+      body: JSON.stringify(data),
+    });
+  });
 }
 
 export function useAuth() {
@@ -112,5 +131,7 @@ export function useAuth() {
     register,
     logout,
     fetchUser,
+    updateProfile,
+    updatePassword,
   };
 }

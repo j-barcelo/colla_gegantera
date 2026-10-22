@@ -13,13 +13,13 @@ class RegisterRequestTest extends TestCase {
     public function test_it_defines_the_expected_fields(): void {
         $rules = (new RegisterRequest)->rules();
 
-        $this->assertSame(['name', 'email', 'password', 'device_name'], array_keys($rules));
+        $this->assertSame(['name', 'surname', 'email', 'password', 'device_name'], array_keys($rules));
     }
 
     public function test_required_fields_are_marked_as_required(): void {
         $rules = (new RegisterRequest)->rules();
 
-        foreach (['name', 'email', 'password'] as $field) {
+        foreach (['name', 'surname', 'email', 'password'] as $field) {
             $this->assertContains('required', $rules[$field], "{$field} must be required");
         }
         $this->assertContains('nullable', $rules['device_name']);
