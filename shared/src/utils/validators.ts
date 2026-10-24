@@ -5,6 +5,8 @@ export type FieldValidator = (value: string) => string;
 const EMAIL_REGEX = /^[^\s@]+@[^\s@.]+\.[^\s@]+$/;
 const PHONE_REGEX = /^[0-9\s+()-]{6,20}$/;
 const MIN_PASSWORD_LENGTH = 8;
+const ALLOWED_AVATAR_TYPES = new Set(['image/jpeg', 'image/png', 'image/webp']);
+const MAX_AVATAR_BYTES = 10 * 1024 * 1024;
 
 export const createRequiredValidator = (message: string = VALIDATION_MESSAGES.required): FieldValidator => {
   return (val: string): string => {
@@ -53,10 +55,22 @@ export const createPasswordConfirmationValidator = (
   };
 };
 
+export const createAvatarFileValidator = (
+  invalidTypeMessage: string = VALIDATION_MESSAGES.avatarInvalidType,
+  maxSizeMessage: string = VALIDATION_MESSAGES.avatarMaxSize,
+) => {
+  return (file: File): string => {
+    if (!ALLOWED_AVATAR_TYPES.has(file.type)) return invalidTypeMessage;
+    if (file.size > MAX_AVATAR_BYTES) return maxSizeMessage;
+    return '';
+  };
+};
+
 export const validators = {
   required: createRequiredValidator,
   phone: createPhoneValidator,
   email: createEmailValidator,
   password: createPasswordValidator,
   passwordConfirmation: createPasswordConfirmationValidator,
+  avatarFile: createAvatarFileValidator,
 } as const;

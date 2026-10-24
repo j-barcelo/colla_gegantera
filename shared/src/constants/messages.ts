@@ -12,6 +12,8 @@ export const VALIDATION_MESSAGES = {
   passwordConfirmRequired: 'Confirma la contrasenya',
   newPasswordConfirmRequired: 'Confirma la nova contrasenya',
   passwordMismatch: 'Les contrasenyes no coincideixen',
+  avatarInvalidType: 'Selecciona una imatge en format JPG, PNG o WebP',
+  avatarMaxSize: 'La imatge seleccionada no pot superar els 10 MB',
 } as const;
 
 export const FORM_MESSAGES = {
@@ -23,4 +25,6 @@ export const FORM_MESSAGES = {
   profileUpdateSuccess: 'Dades personals actualitzades correctament.',
   passwordUpdateFallback: "No s'ha pogut actualitzar la contrasenya.",
   passwordUpdateSuccess: "La contrasenya s'ha canviat correctament.",
+  avatarUpdateFallback: "No s'ha pogut actualitzar la imatge de perfil.",
+  avatarUpdateSuccess: "La imatge de perfil s'ha actualitzat correctament.",
 } as const;

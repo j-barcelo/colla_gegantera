@@ -73,48 +73,6 @@
     inset-inline-end: to-rem(30);
     z-index: 2;
   }
-
-  &__avatar {
-    position: relative;
-    width: to-rem(140);
-    height: to-rem(140);
-    overflow: visible;
-    border-radius: 50%;
-  }
-
-  &__img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 50%;
-  }
-
-  &__edit-badge {
-    position: absolute;
-    inset-block-end: to-rem(-10);
-    inset-inline-end: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: to-rem(44);
-    height: to-rem(44);
-    padding: 0;
-    color: var(--cl-light);
-    cursor: pointer;
-    background-color: var(--cl-primary);
-    border: none;
-    border-radius: 50%;
-  }
-
-  &__edit-icon {
-    width: to-rem(22);
-    height: to-rem(22);
-    fill: none;
-    stroke: currentcolor;
-    stroke-width: 2;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-  }
 }
 
 .c-profile-details {
@@ -305,5 +263,13 @@
     flex-wrap: wrap;
     gap: to-rem(12);
     margin-block-start: to-rem(12);
+  }
+
+  &__preview-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: to-rem(20);
+    align-items: center;
+    padding-block: to-rem(16);
   }
 }

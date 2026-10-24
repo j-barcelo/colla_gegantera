@@ -47,4 +47,15 @@ describe('validators', () => {
     current = 'updated123';
     expect(confirmValidator('secret123')).not.toBe('');
   });
+
+  it('validates avatar file MIME type and size limits', () => {
+    const validateAvatar = validators.avatarFile('INVALID_TYPE', 'MAX_SIZE');
+    const validPng = new File(['img-bytes'], 'avatar.png', { type: 'image/png' });
+    const invalidPdf = new File(['pdf-bytes'], 'doc.pdf', { type: 'application/pdf' });
+    const oversizedJpg = new File([new Uint8Array(10 * 1024 * 1024 + 10)], 'huge.jpg', { type: 'image/jpeg' });
+
+    expect(validateAvatar(validPng)).toBe('');
+    expect(validateAvatar(invalidPdf)).toBe('INVALID_TYPE');
+    expect(validateAvatar(oversizedJpg)).toBe('MAX_SIZE');
+  });
 });

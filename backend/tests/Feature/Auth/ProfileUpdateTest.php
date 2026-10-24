@@ -4,7 +4,10 @@ namespace Tests\Feature\Auth;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
@@ -13,6 +16,7 @@ class ProfileUpdateTest extends TestCase {
 
     private const string USER_URL = '/api/user';
     private const string PASSWORD_URL = '/api/user/password';
+    private const string AVATAR_URL = '/api/user/avatar';
     private const string UPDATED_EMAIL = 'miquel@geganters.cat';
     private const string CURRENT_PASSWORD = 'current-secret-123';
     private const string NEW_PASSWORD = 'new-secret-456';
@@ -180,6 +184,64 @@ class ProfileUpdateTest extends TestCase {
             'current_password' => self::CURRENT_PASSWORD,
             'password' => self::NEW_PASSWORD,
             'password_confirmation' => self::NEW_PASSWORD,
+        ]);
+
+        $response->assertUnauthorized();
+    }
+
+    public function test_authenticated_user_can_upload_avatar_and_replaces_previous_avatar(): void {
+        Storage::fake('public');
+
+        $oldPath = UploadedFile::fake()->image('old.webp', 256, 256)->store('avatars', 'public');
+        $user = User::factory()->create(['avatar' => '/storage/' . $oldPath]);
+
+        Sanctum::actingAs($user);
+
+        $response = $this->postJson(self::AVATAR_URL, [
+            'avatar' => UploadedFile::fake()->image('new-avatar.webp', 512, 512),
+        ]);
+
+        $response->assertOk();
+
+        $newAvatarUrl = $response->json('user.avatar');
+        $this->assertNotNull($newAvatarUrl);
+        $this->assertStringStartsWith('/storage/avatars/', $newAvatarUrl);
+        $this->assertStringEndsWith('.webp', $newAvatarUrl);
+
+        $newRelativePath = Str::after($newAvatarUrl, '/storage/');
+        Storage::disk('public')->assertExists($newRelativePath);
+        Storage::disk('public')->assertMissing($oldPath);
+
+        $this->get($newAvatarUrl)->assertOk();
+
+        $this->assertDatabaseHas('users', [
+            'id' => $user->id,
+            'avatar' => $newAvatarUrl,
+        ]);
+    }
+
+    public function test_avatar_upload_rejects_non_webp_or_oversized_file(): void {
+        Storage::fake('public');
+        $user = User::factory()->create();
+
+        Sanctum::actingAs($user);
+
+        $nonWebpResponse = $this->postJson(self::AVATAR_URL, [
+            'avatar' => UploadedFile::fake()->image('avatar.png', 300, 300),
+        ]);
+        $nonWebpResponse->assertUnprocessable()->assertJsonValidationErrors(['avatar']);
+
+        $oversizedDimensionsResponse = $this->postJson(self::AVATAR_URL, [
+            'avatar' => UploadedFile::fake()->image('huge.webp', 800, 800),
+        ]);
+        $oversizedDimensionsResponse->assertUnprocessable()->assertJsonValidationErrors(['avatar']);
+    }
+
+    public function test_avatar_upload_rejects_unauthenticated_requests(): void {
+        Storage::fake('public');
+
+        $response = $this->postJson(self::AVATAR_URL, [
+            'avatar' => UploadedFile::fake()->image('avatar.jpg'),
         ]);
 
         $response->assertUnauthorized();

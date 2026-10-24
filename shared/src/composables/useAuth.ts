@@ -118,6 +118,21 @@ async function updatePassword(data: UpdatePasswordData): Promise<{ message: stri
   });
 }
 
+async function updateAvatar(file: File): Promise<User> {
+  return withAuthLoading("Ha ocorregut un error durant l'actualització de la imatge de perfil.", async () => {
+    const formData = new FormData();
+    formData.append('avatar', file);
+
+    const response = await apiFetch<{ user: User }>('/api/user/avatar', {
+      method: 'POST',
+      body: formData,
+    });
+
+    currentUser.value = response.user;
+    return response.user;
+  });
+}
+
 export function useAuth() {
   const isAuthenticated = computed(() => !!currentToken.value && !!currentUser.value);
 
@@ -133,5 +148,6 @@ export function useAuth() {
     fetchUser,
     updateProfile,
     updatePassword,
+    updateAvatar,
   };
 }

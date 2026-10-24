@@ -121,4 +121,32 @@ describe('useAuth composable', () => {
     expect(error.value).toBe('La contrasenya actual no és correcta.');
     expect(isLoading.value).toBe(false);
   });
+
+  it('uploads avatar via POST /api/user/avatar with FormData and updates user state', async () => {
+    const updatedUser: User = {
+      id: 1,
+      name: 'Miquel',
+      surname: 'Pons Gomila',
+      email: 'miquelpons@gegantsinca.com',
+      avatar: '/storage/avatars/new-avatar.png',
+    };
+
+    vi.mocked(apiModule.apiFetch).mockResolvedValueOnce({ user: updatedUser });
+
+    const { updateAvatar, user, isLoading, error } = useAuth();
+    const file = new File(['image-content'], 'avatar.png', { type: 'image/png' });
+
+    const result = await updateAvatar(file);
+
+    expect(apiModule.apiFetch).toHaveBeenCalledTimes(1);
+    const [endpoint, options] = vi.mocked(apiModule.apiFetch).mock.calls[0];
+    expect(endpoint).toBe('/api/user/avatar');
+    expect(options?.method).toBe('POST');
+    expect(options?.body).toBeInstanceOf(FormData);
+    expect((options?.body as FormData).get('avatar')).toBe(file);
+    expect(result).toEqual(updatedUser);
+    expect(user.value?.avatar).toBe('/storage/avatars/new-avatar.png');
+    expect(isLoading.value).toBe(false);
+    expect(error.value).toBeNull();
+  });
 });

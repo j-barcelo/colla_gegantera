@@ -26,7 +26,18 @@ const mockIsLoading = ref(false);
 const mockFetchUser = vi.fn();
 const mockUpdateProfile = vi.fn();
 const mockUpdatePassword = vi.fn();
+const mockUpdateAvatar = vi.fn();
 const mockLogout = vi.fn();
+const mockOptimizeAvatarToWebp = vi.fn();
+
+vi.mock('@shared', async () => {
+  const actual = await vi.importActual<typeof import('@shared')>('@shared');
+  return {
+    ...actual,
+    optimizeAvatarToWebp: (...args: Parameters<typeof actual.optimizeAvatarToWebp>) =>
+      mockOptimizeAvatarToWebp(...args),
+  };
+});
 
 vi.mock('@shared/composables/useAuth', () => ({
   useAuth: () => ({
@@ -36,6 +47,7 @@ vi.mock('@shared/composables/useAuth', () => ({
     fetchUser: mockFetchUser,
     updateProfile: mockUpdateProfile,
     updatePassword: mockUpdatePassword,
+    updateAvatar: mockUpdateAvatar,
     logout: mockLogout,
   }),
 }));
@@ -140,5 +152,52 @@ describe('ProfilePage.vue', () => {
 
     expect(mockLogout).toHaveBeenCalledTimes(1);
     expect(mockPush).toHaveBeenCalledWith('/login');
+  });
+
+  it('transforms valid selected avatar to WebP, displays preview modal, and uploads on confirm', async () => {
+    const wrapper = mount(ProfilePage);
+    const fileInput = wrapper.find('input[type="file"]');
+
+    const invalidFile = new File(['bad'], 'doc.pdf', { type: 'application/pdf' });
+    Object.defineProperty(fileInput.element, 'files', {
+      value: [invalidFile],
+      configurable: true,
+    });
+    await fileInput.trigger('change');
+    await flushPromises();
+
+    expect(mockOptimizeAvatarToWebp).not.toHaveBeenCalled();
+    expect(mockUpdateAvatar).not.toHaveBeenCalled();
+    expect(wrapper.find('.c-alert--danger').exists()).toBe(true);
+
+    const validFile = new File(['img'], 'avatar.png', { type: 'image/png' });
+    const transformedWebp = new File(['webp-img'], 'avatar.webp', { type: 'image/webp' });
+    mockOptimizeAvatarToWebp.mockResolvedValueOnce({
+      file: transformedWebp,
+      previewUrl: 'blob:http://localhost/preview-webp',
+    });
+    mockUpdateAvatar.mockResolvedValueOnce({
+      ...mockUser.value,
+      avatar: '/storage/avatars/avatar.webp',
+    });
+    Object.defineProperty(fileInput.element, 'files', {
+      value: [validFile],
+      configurable: true,
+    });
+    await fileInput.trigger('change');
+    await flushPromises();
+
+    expect(mockOptimizeAvatarToWebp).toHaveBeenCalledWith(validFile);
+    expect(wrapper.find('.c-profile-modal__preview-wrap .c-user-avatar__img').attributes('src')).toBe(
+      'blob:http://localhost/preview-webp',
+    );
+    expect(mockUpdateAvatar).not.toHaveBeenCalled();
+
+    await wrapper.find('.c-profile-modal .c-profile-modal__form').trigger('submit.prevent');
+    await flushPromises();
+
+    expect(mockUpdateAvatar).toHaveBeenCalledWith(transformedWebp);
+    expect(wrapper.find('.c-profile-modal__preview-wrap').exists()).toBe(false);
+    expect(wrapper.find('.c-alert--primary').exists()).toBe(true);
   });
 });

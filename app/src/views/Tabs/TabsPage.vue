@@ -1,6 +1,6 @@
 <script setup lang="ts">
+import UserAvatar from '@/components/UserAvatar/UserAvatar.vue';
 import { IonIcon, IonLabel, IonPage, IonRouterOutlet, IonTabBar, IonTabButton, IonTabs } from '@ionic/vue';
-import defaultAvatar from '@shared/assets/images/default-avatar.svg';
 import { useAuth } from '@shared/composables/useAuth';
 import { homeOutline, imagesOutline, statsChartOutline } from 'ionicons/icons';
 
@@ -32,9 +32,7 @@ const { user } = useAuth();
         </ion-tab-button>
 
         <ion-tab-button tab="profile" href="/tabs/profile" class="c-app-tab-bar__item">
-          <div class="c-app-tab-bar__avatar-wrap">
-            <img :src="user?.avatar || defaultAvatar" alt="Foto de perfil" class="c-app-tab-bar__avatar" />
-          </div>
+          <UserAvatar :src="user?.avatar" alt="Foto de perfil" size="sm" class="c-app-tab-bar__avatar" />
           <ion-label>Tu</ion-label>
           <span class="c-app-tab-bar__indicator" aria-hidden="true"></span>
         </ion-tab-button>

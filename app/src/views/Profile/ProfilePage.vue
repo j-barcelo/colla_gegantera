@@ -1,20 +1,35 @@
 <script setup lang="ts">
+import UserAvatar from '@/components/UserAvatar/UserAvatar.vue';
 import { IonContent, IonIcon, IonPage } from '@ionic/vue';
-import { AppAlert, AppButton, AppInput, FORM_MESSAGES, useForm, VALIDATION_MESSAGES, validators } from '@shared';
-import defaultAvatar from '@shared/assets/images/default-avatar.svg';
+import {
+  ApiError,
+  AppAlert,
+  AppButton,
+  AppInput,
+  FORM_MESSAGES,
+  optimizeAvatarToWebp,
+  useForm,
+  VALIDATION_MESSAGES,
+  validators,
+} from '@shared';
 import { useAuth } from '@shared/composables/useAuth';
-import { closeOutline, logOutOutline } from 'ionicons/icons';
+import { alertCircleOutline, closeOutline, logOutOutline } from 'ionicons/icons';
 import { computed, onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
-const { user, token, isLoading, fetchUser, updateProfile, updatePassword, logout } = useAuth();
+const { user, token, isLoading, fetchUser, updateProfile, updatePassword, updateAvatar, logout } = useAuth();
 
 const showEditModal = ref(false);
 const showPasswordModal = ref(false);
+const showAvatarModal = ref(false);
+const avatarComponentRef = ref<InstanceType<typeof UserAvatar> | null>(null);
+const pendingAvatarFile = ref<File | null>(null);
+const avatarPreviewUrl = ref('');
 
 const profileSuccess = ref('');
 const passwordSuccess = ref('');
+const avatarError = ref('');
 
 const editForm = ref({
   name: '',
@@ -88,9 +103,73 @@ const validateConfirmPassword = validators.passwordConfirmation(
   () => newPassword.value,
   VALIDATION_MESSAGES.newPasswordConfirmRequired,
 );
+const validateAvatarFile = validators.avatarFile();
 
 const onNewPasswordChange = (): void => {
   validatePasswordFieldIfTouched('password_confirmation');
+};
+
+const clearAvatarPreview = (): void => {
+  if (avatarPreviewUrl.value) {
+    URL.revokeObjectURL(avatarPreviewUrl.value);
+    avatarPreviewUrl.value = '';
+  }
+  pendingAvatarFile.value = null;
+};
+
+const triggerAvatarSelection = (): void => {
+  avatarError.value = '';
+  profileSuccess.value = '';
+  avatarComponentRef.value?.openFilePicker();
+};
+
+const handleAvatarSelected = async (file: File): Promise<void> => {
+  avatarError.value = '';
+  profileSuccess.value = '';
+
+  const validationError = validateAvatarFile(file);
+  if (validationError) {
+    avatarError.value = validationError;
+    return;
+  }
+
+  try {
+    clearAvatarPreview();
+    const optimized = await optimizeAvatarToWebp(file);
+    pendingAvatarFile.value = optimized.file;
+    avatarPreviewUrl.value = optimized.previewUrl;
+    showAvatarModal.value = true;
+  } catch (err: unknown) {
+    avatarError.value = err instanceof Error ? err.message : FORM_MESSAGES.avatarUpdateFallback;
+  }
+};
+
+const cancelAvatarPreview = (): void => {
+  clearAvatarPreview();
+  avatarError.value = '';
+  showAvatarModal.value = false;
+};
+
+const confirmAvatarUpload = async (): Promise<void> => {
+  if (!pendingAvatarFile.value) return;
+
+  avatarError.value = '';
+  profileSuccess.value = '';
+
+  try {
+    await updateAvatar(pendingAvatarFile.value);
+    clearAvatarPreview();
+    showAvatarModal.value = false;
+    profileSuccess.value = FORM_MESSAGES.avatarUpdateSuccess;
+  } catch (err: unknown) {
+    if (err instanceof ApiError && err.errors?.avatar?.[0]) {
+      avatarError.value = err.errors.avatar[0];
+    } else if (err instanceof Error && err.message) {
+      avatarError.value = err.message;
+    } else {
+      avatarError.value = FORM_MESSAGES.avatarUpdateFallback;
+    }
+  }
 };
 
 const startEditing = (): void => {
@@ -191,30 +270,28 @@ const handleLogout = async (): Promise<void> => {
 
           <!-- Overlapping Avatar -->
           <div class="c-profile-header__avatar-wrapper">
-            <div class="c-profile-header__avatar">
-              <img
-                :src="user?.avatar || defaultAvatar"
-                :alt="`Fotografia de perfil de ${user?.name || 'usuari'}`"
-                class="c-profile-header__img"
-              />
-              <button
-                type="button"
-                class="c-profile-header__edit-badge"
-                aria-label="Canviar la fotografia de perfil"
-                @click="startEditing"
-              >
-                <svg class="c-profile-header__edit-icon" viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L8 18l-4 1 1-4L16.5 3.5Z" />
-                  <path d="M4 21h16" />
-                </svg>
-              </button>
-            </div>
+            <UserAvatar
+              ref="avatarComponentRef"
+              :src="user?.avatar"
+              :alt="`Fotografia de perfil de ${user?.name || 'usuari'}`"
+              size="xl"
+              editable
+              :disabled="isLoading"
+              @select-file="handleAvatarSelected"
+            />
           </div>
         </header>
 
         <!-- Personal Details Section (White Background) -->
         <section class="c-profile-details" aria-labelledby="profile-data-heading">
           <h2 id="profile-data-heading" class="u-visually-hidden">Dades de contacte</h2>
+
+          <AppAlert v-if="avatarError" variant="danger">
+            <template #icon>
+              <ion-icon :icon="alertCircleOutline" aria-hidden="true" />
+            </template>
+            {{ avatarError }}
+          </AppAlert>
 
           <AppAlert v-if="profileSuccess" variant="primary">
             {{ profileSuccess }}
@@ -442,6 +519,42 @@ const handleLogout = async (): Promise<void> => {
                 Cancel·lar
               </AppButton>
               <AppButton type="submit" variant="outline-primary" :disabled="isLoading">Desar contrasenya</AppButton>
+            </div>
+          </form>
+        </dialog>
+
+        <!-- Full-Screen Avatar WebP Preview Modal -->
+        <dialog
+          v-if="showAvatarModal"
+          open
+          class="c-profile-modal c-profile-modal--primary"
+          aria-modal="true"
+          aria-labelledby="avatar-modal-title"
+        >
+          <header class="c-profile-modal__header">
+            <h2 id="avatar-modal-title" class="c-profile-modal__title">Previsualització de la imatge</h2>
+            <button type="button" class="c-profile-modal__close" aria-label="Tancar" @click="cancelAvatarPreview">
+              <ion-icon :icon="closeOutline" aria-hidden="true" />
+            </button>
+          </header>
+
+          <form class="c-profile-modal__form" @submit.prevent="confirmAvatarUpload">
+            <AppAlert v-if="avatarError" variant="danger">
+              {{ avatarError }}
+            </AppAlert>
+
+            <div class="c-profile-modal__preview-wrap">
+              <UserAvatar :src="avatarPreviewUrl" alt="Previsualització de la imatge de perfil" size="xl" />
+              <AppButton type="button" variant="outline-light" :disabled="isLoading" @click="triggerAvatarSelection">
+                Triar una altra imatge
+              </AppButton>
+            </div>
+
+            <div class="c-profile-modal__actions">
+              <AppButton type="button" variant="outline-light" :disabled="isLoading" @click="cancelAvatarPreview">
+                Cancel·lar
+              </AppButton>
+              <AppButton type="submit" variant="outline-light" :disabled="isLoading">Desar imatge</AppButton>
             </div>
           </form>
         </dialog>

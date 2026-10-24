@@ -27,7 +27,7 @@
     &.tab-selected {
       font-weight: var(--fw-bold);
 
-      .c-app-tab-bar__avatar-wrap {
+      .c-app-tab-bar__avatar {
         border-color: var(--cl-primary);
       }
 
@@ -37,23 +37,10 @@
     }
   }
 
-  &__avatar-wrap {
-    box-sizing: border-box;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: to-rem(26);
-    height: to-rem(26);
-    margin-block-end: to-rem(4);
-    overflow: hidden;
-    border: to-rem(2) solid transparent;
-    border-radius: 50%;
-  }
-
   &__avatar {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+    box-sizing: border-box;
+    margin-block-end: to-rem(4);
+    border: to-rem(2) solid transparent;
   }
 
   &__indicator {

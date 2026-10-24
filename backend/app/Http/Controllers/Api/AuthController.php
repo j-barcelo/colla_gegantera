@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\LoginRequest;
 use App\Http\Requests\Api\RegisterRequest;
+use App\Http\Requests\Api\UpdateAvatarRequest;
 use App\Http\Requests\Api\UpdatePasswordRequest;
 use App\Http\Requests\Api\UpdateProfileRequest;
 use App\Http\Resources\UserResource;
@@ -12,6 +13,8 @@ use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller {
@@ -94,5 +97,21 @@ class AuthController extends Controller {
         $request->user()->update(['password' => Hash::make($request->validated()['password'])]);
 
         return response()->json(['message' => 'Password updated successfully']);
+    }
+
+    /**
+     * Update the authenticated user avatar image.
+     */
+    public function updateAvatar(UpdateAvatarRequest $request): JsonResponse {
+        $user = $request->user();
+
+        if ($user->avatar && str_starts_with($user->avatar, '/storage/avatars/')) {
+            Storage::disk('public')->delete(Str::after($user->avatar, '/storage/'));
+        }
+
+        $path = $request->file('avatar')->store('avatars', 'public');
+        $user->update(['avatar' => '/storage/' . $path]);
+
+        return response()->json(['user' => new UserResource($user->fresh())]);
     }
 }

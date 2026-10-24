@@ -36,6 +36,15 @@ export function getApiBaseUrl(): string {
   return '';
 }
 
+export function resolveStorageUrl(path?: string | null): string | null {
+  if (!path) return null;
+  if (/^(https?:|data:|blob:)/.test(path)) return path;
+
+  const base = getApiBaseUrl();
+  const cleanPath = path.startsWith('/') ? path : `/${path}`;
+  return `${base}${cleanPath}`;
+}
+
 export class ApiError extends Error {
   constructor(
     message: string,
