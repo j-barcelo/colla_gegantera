@@ -17,6 +17,7 @@ class UserResourceTest extends TestCase {
             'username' => 'mpons',
             'email' => 'miquel@geganters.cat',
             'phone' => '600123456',
+            'role' => 'member',
             'address' => 'Carrer Major 1',
             'avatar' => 'avatars/miquel.jpg',
         ]);
@@ -24,13 +25,14 @@ class UserResourceTest extends TestCase {
         $data = (new UserResource($user))->toArray(Request::create('/'));
 
         $this->assertSame(['id', 'name', 'surname', 'username', 'email',
-            'phone', 'address', 'avatar', 'created_at', 'updated_at',
+            'role', 'phone', 'address', 'avatar', 'created_at', 'updated_at',
         ], array_keys($data));
         $this->assertSame(7, $data['id']);
         $this->assertSame('Miquel', $data['name']);
         $this->assertSame('Pons', $data['surname']);
         $this->assertSame('mpons', $data['username']);
         $this->assertSame('miquel@geganters.cat', $data['email']);
+        $this->assertSame('member', $data['role']);
         $this->assertSame('600123456', $data['phone']);
         $this->assertSame('Carrer Major 1', $data['address']);
         $this->assertSame('avatars/miquel.jpg', $data['avatar']);

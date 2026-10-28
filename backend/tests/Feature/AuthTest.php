@@ -34,13 +34,14 @@ class AuthTest extends TestCase {
 
         $response->assertCreated()
             ->assertJsonStructure([
-                'user' => ['id', 'name', 'surname', 'email'],
+                'user' => ['id', 'name', 'surname', 'email', 'role'],
                 'token',
                 'token_type',
             ])
             ->assertJsonPath('user.email', self::TEST_EMAIL)
             ->assertJsonPath('user.name', self::TEST_NAME)
             ->assertJsonPath('user.surname', self::TEST_SURNAME)
+            ->assertJsonPath('user.role', 'member')
             ->assertJsonPath('token_type', self::BEARER_TOKEN);
 
         $this->assertDatabaseHas('users', [
@@ -90,11 +91,12 @@ class AuthTest extends TestCase {
 
         $response->assertOk()
             ->assertJsonStructure([
-                'user' => ['id', 'name', 'email'],
+                'user' => ['id', 'name', 'email', 'role'],
                 'token',
                 'token_type',
             ])
             ->assertJsonPath('user.id', $user->id)
+            ->assertJsonPath('user.role', 'member')
             ->assertJsonPath('token_type', self::BEARER_TOKEN);
     }
 

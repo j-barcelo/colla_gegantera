@@ -1,0 +1,76 @@
+@use '@shared/styles/2-tools/functions' as *;
+@use '@shared/styles/2-tools/mixins' as *;
+
+.c-install {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 100vh;
+  padding-block: to-rem(48) to-rem(40);
+  padding-inline: to-rem(20);
+  background-color: var(--cl-primary);
+
+  &__header {
+    display: flex;
+    flex-direction: column;
+    gap: to-rem(16);
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding-block-end: to-rem(28);
+  }
+
+  &__brand {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin: 0;
+  }
+
+  &__logo {
+    display: block;
+    width: to-rem(260);
+    max-width: 100%;
+    height: auto;
+    filter: brightness(0) invert(1);
+  }
+
+  &__step-indicator {
+    margin: 0;
+
+    @include font('text-sm');
+
+    font-weight: var(--fw-semibold);
+    color: var(--cl-light);
+    text-align: center;
+  }
+
+  &__body {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: to-rem(360);
+    margin-inline: auto;
+  }
+
+  &__form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  &__step {
+    display: flex;
+    flex-direction: column;
+    gap: to-rem(14);
+    width: 100%;
+  }
+
+  &__actions {
+    display: flex;
+    gap: to-rem(12);
+    justify-content: space-between;
+    margin-block-start: to-rem(12);
+  }
+}

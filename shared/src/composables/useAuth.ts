@@ -123,10 +123,7 @@ async function updateAvatar(file: File): Promise<User> {
     const formData = new FormData();
     formData.append('avatar', file);
 
-    const response = await apiFetch<{ user: User }>('/api/user/avatar', {
-      method: 'POST',
-      body: formData,
-    });
+    const response = await apiFetch<{ user: User }>('/api/user/avatar', { method: 'POST', body: formData });
 
     currentUser.value = response.user;
     return response.user;

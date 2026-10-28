@@ -1,9 +1,12 @@
+export type UserRole = 'admin' | 'member';
+
 export interface User {
   id: number;
   name: string;
   surname?: string | null;
   username?: string | null;
   email: string;
+  role?: UserRole | string;
   phone?: string | null;
   address?: string | null;
   avatar?: string | null;

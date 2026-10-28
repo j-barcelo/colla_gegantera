@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Models;
 
+use App\Enums\UserRole;
 use App\Models\User;
 use PHPUnit\Framework\TestCase;
 
@@ -25,5 +26,16 @@ class UserTest extends TestCase {
         $user->setRawAttributes(['name' => 'Maria', 'email' => 'maria@geganters.cat', 'password' => 'hash']);
 
         $this->assertArrayNotHasKey('password', $user->toArray());
+    }
+
+    public function test_identifies_administrator_role_correctly(): void {
+        $admin = new User;
+        $admin->role = UserRole::Admin;
+
+        $member = new User;
+        $member->role = UserRole::Member;
+
+        $this->assertTrue($admin->isAdmin());
+        $this->assertFalse($member->isAdmin());
     }
 }

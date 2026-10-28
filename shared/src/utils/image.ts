@@ -66,4 +66,3 @@ export async function optimizeAvatarToWebp(
     URL.revokeObjectURL(sourceUrl);
   }
 }
-
