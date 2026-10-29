@@ -28,7 +28,7 @@ class AuthController extends Controller {
             'name' => $validated['name'],
             'surname' => $validated['surname'],
             'email' => $validated['email'],
-            'password' => Hash::make($validated['password']),
+            'password' => $validated['password'],
         ]);
 
         return $this->tokenResponse($user, $validated['device_name'] ?? null, 201);
@@ -94,7 +94,7 @@ class AuthController extends Controller {
      * Update the authenticated user password.
      */
     public function updatePassword(UpdatePasswordRequest $request): JsonResponse {
-        $request->user()->update(['password' => Hash::make($request->validated()['password'])]);
+        $request->user()->update(['password' => $request->validated()['password']]);
 
         return response()->json(['message' => 'Password updated successfully']);
     }

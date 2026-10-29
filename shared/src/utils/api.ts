@@ -3,19 +3,49 @@ import type { ApiErrorResponse } from '../types/http';
 const TOKEN_KEY = 'colla_auth_token';
 const API_URL_KEY = 'colla_api_url';
 
+export interface StorageSyncAdapter {
+  onTokenChange?: (token: string | null) => void | Promise<void>;
+  onApiUrlChange?: (url: string | null) => void | Promise<void>;
+}
+
+let syncAdapter: StorageSyncAdapter | null = null;
+
+export function registerStorageSyncAdapter(adapter: StorageSyncAdapter): void {
+  syncAdapter = adapter;
+}
+
 export function getStoredToken(): string | null {
   if (typeof window === 'undefined') return null;
   return localStorage.getItem(TOKEN_KEY);
 }
 
 export function setStoredToken(token: string): void {
-  if (typeof window === 'undefined') return;
-  localStorage.setItem(TOKEN_KEY, token);
+  if (typeof window !== 'undefined') localStorage.setItem(TOKEN_KEY, token);
+  void syncAdapter?.onTokenChange?.(token);
 }
 
 export function removeStoredToken(): void {
-  if (typeof window === 'undefined') return;
-  localStorage.removeItem(TOKEN_KEY);
+  if (typeof window !== 'undefined') localStorage.removeItem(TOKEN_KEY);
+  void syncAdapter?.onTokenChange?.(null);
+}
+
+export function setStoredApiBaseUrl(url: string | null): void {
+  if (typeof window !== 'undefined') {
+    if (url) {
+      localStorage.setItem(API_URL_KEY, url);
+    } else {
+      localStorage.removeItem(API_URL_KEY);
+    }
+  }
+  void syncAdapter?.onApiUrlChange?.(url);
+}
+
+function trimTrailingSlash(url: string): string {
+  let end = url.length;
+  while (end > 0 && url.codePointAt(end - 1) === 47) {
+    end--;
+  }
+  return url.slice(0, end);
 }
 
 /**
@@ -26,12 +56,10 @@ export function removeStoredToken(): void {
 export function getApiBaseUrl(): string {
   if (typeof window !== 'undefined') {
     const savedUrl = localStorage.getItem(API_URL_KEY);
-    if (savedUrl) return savedUrl.replace(/\/+$/, '');
+    if (savedUrl) return trimTrailingSlash(savedUrl);
   }
 
-  if (import.meta?.env?.VITE_API_URL) {
-    return String(import.meta.env.VITE_API_URL).replace(/\/+$/, '');
-  }
+  if (import.meta?.env?.VITE_API_URL) return trimTrailingSlash(String(import.meta.env.VITE_API_URL));
 
   return '';
 }
@@ -67,7 +95,7 @@ export async function apiFetch<T>(endpoint: string, options: RequestInit = {}): 
   const token = getStoredToken();
   const headers: Record<string, string> = {
     Accept: 'application/json',
-    ...((options.headers as Record<string, string>) || {}),
+    ...(options.headers as Record<string, string>),
   };
 
   if (token) headers.Authorization = `Bearer ${token}`;

@@ -20,6 +20,11 @@ class AuthTest extends TestCase {
     private const string LOGIN_URL = '/api/login';
     private const string BEARER_TOKEN = 'Bearer';
 
+    protected function setUp(): void {
+        parent::setUp();
+        User::factory()->admin()->create();
+    }
+
     public function test_user_can_register_with_valid_data(): void {
         $payload = [
             'name' => self::TEST_NAME,

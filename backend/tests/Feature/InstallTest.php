@@ -24,12 +24,16 @@ class InstallTest extends TestCase {
         $response->assertRedirect(self::INSTALL_URL);
     }
 
+    public function test_api_returns_503_when_application_is_not_installed(): void {
+        $response = $this->getJson('/api/message');
+
+        $response->assertStatus(503)->assertJson(['message' => 'L\'aplicació encara no està instal·lada.', 'installed' => false]);
+    }
+
     public function test_install_page_renders_when_application_is_not_installed(): void {
         $response = $this->get(self::INSTALL_URL);
 
-        $response->assertOk()
-            ->assertViewIs('install')
-            ->assertSee('Instal·lació inicial');
+        $response->assertOk()->assertViewIs('install')->assertSee('Instal·lació inicial');
     }
 
     public function test_can_complete_installation_with_sqlite_and_create_admin_user(): void {

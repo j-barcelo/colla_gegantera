@@ -3,6 +3,7 @@
 namespace Tests\Feature\Auth;
 
 use App\Models\User;
+use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Hash;
@@ -20,6 +21,11 @@ class ProfileUpdateTest extends TestCase {
     private const string UPDATED_EMAIL = 'miquel@geganters.cat';
     private const string CURRENT_PASSWORD = 'current-secret-123';
     private const string NEW_PASSWORD = 'new-secret-456';
+
+    protected function setUp(): void {
+        parent::setUp();
+        User::factory()->admin()->create();
+    }
 
     public function test_authenticated_user_can_update_profile_fields(): void {
         $user = User::factory()->create([
@@ -209,8 +215,10 @@ class ProfileUpdateTest extends TestCase {
         $this->assertStringEndsWith('.webp', $newAvatarUrl);
 
         $newRelativePath = Str::after($newAvatarUrl, '/storage/');
-        Storage::disk('public')->assertExists($newRelativePath);
-        Storage::disk('public')->assertMissing($oldPath);
+        /** @var FilesystemAdapter $disk */
+        $disk = Storage::disk('public');
+        $disk->assertExists($newRelativePath);
+        $disk->assertMissing($oldPath);
 
         $this->get($newAvatarUrl)->assertOk();
 

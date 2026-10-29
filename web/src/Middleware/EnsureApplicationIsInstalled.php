@@ -21,15 +21,16 @@ class EnsureApplicationIsInstalled {
         $isInstalled = $this->installer->isInstalled();
         $isInstallRoute = $request->routeIs('install.*') || $request->is('install', 'install/*');
 
-        if (!$isInstalled && config('session.driver') === 'database') {
-            config(['session.driver' => 'file']);
+        if (!$isInstalled) {
+            if ($request->is('api/*') || $request->expectsJson()) {
+                return response()->json(['message' => 'L\'aplicació encara no està instal·lada.', 'installed' => false], 503);
+            }
+
+            if (config('session.driver') === 'database') config(['session.driver' => 'file']);
+
+            return $isInstallRoute ? $next($request) : redirect()->route('install.index');
         }
 
-        $redirectRoute = match ($isInstalled) {
-            false => $isInstallRoute ? null : 'install.index',
-            true => $isInstallRoute ? 'home' : null,
-        };
-
-        return $redirectRoute ? redirect()->route($redirectRoute) : $next($request);
+        return $isInstallRoute ? redirect()->route('home') : $next($request);
     }
 }

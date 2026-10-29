@@ -26,6 +26,10 @@ function clearSession(): void {
   removeStoredToken();
 }
 
+export function syncAuthToken(token: string | null): void {
+  currentToken.value = token;
+}
+
 async function withAuthLoading<T>(fallbackMessage: string, action: () => Promise<T>): Promise<T> {
   isLoading.value = true;
   authError.value = null;
@@ -146,5 +150,6 @@ export function useAuth() {
     updateProfile,
     updatePassword,
     updateAvatar,
+    syncAuthToken,
   };
 }
