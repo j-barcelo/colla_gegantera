@@ -22,6 +22,7 @@ export default [
       '**/.output/**',
       '**/backend/**',
       '**/public/**',
+      '**/dev-dist/**',
       '**/cypress/**',
       '**/*.d.ts',
     ],

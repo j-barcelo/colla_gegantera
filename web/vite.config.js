@@ -1,9 +1,9 @@
+import vue from '@vitejs/plugin-vue';
+import laravel from 'laravel-vite-plugin';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { defineConfig } from 'vite';
-import laravel from 'laravel-vite-plugin';
-import vue from '@vitejs/plugin-vue';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -49,11 +49,7 @@ export default defineConfig({
       input: ['css/app.scss', 'js/app.ts'],
       publicDirectory: '../public',
       buildDirectory: 'build',
-      refresh: [
-        'views/**/*.blade.php',
-        'src/**/*.php',
-        'routes.php',
-      ],
+      refresh: ['views/**/*.blade.php', 'src/**/*.php', 'routes.php'],
     }),
     vue(),
   ],

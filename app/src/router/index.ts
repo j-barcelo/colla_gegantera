@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from '@ionic/vue-router';
+import { useAuth } from '@shared/composables/useAuth';
 import { getStoredToken } from '@shared/utils/api';
 import type { NavigationGuardNext, RouteLocationNormalized, RouteRecordRaw } from 'vue-router';
 import TabsPage from '../views/Tabs/TabsPage.vue';
@@ -29,6 +30,12 @@ const routes: Array<RouteRecordRaw> = [
       { path: 'profile', component: () => import('@/views/Profile/ProfilePage.vue') },
     ],
   },
+  {
+    path: '/admin/users',
+    name: 'AdminUsers',
+    component: () => import('@/views/AdminUsers/AdminUsersPage.vue'),
+    meta: { requiresAdmin: true },
+  },
 ];
 
 const router = createRouter({
@@ -36,7 +43,7 @@ const router = createRouter({
   routes,
 });
 
-router.beforeEach((to: RouteLocationNormalized, _from: RouteLocationNormalized, next: NavigationGuardNext) => {
+router.beforeEach(async (to: RouteLocationNormalized, _from: RouteLocationNormalized, next: NavigationGuardNext) => {
   const token = getStoredToken();
   const isPublicRoute = Boolean(to.meta.guestOnly);
 
@@ -45,6 +52,15 @@ router.beforeEach((to: RouteLocationNormalized, _from: RouteLocationNormalized, 
 
   // Si ja té sessió iniciada i va a login o registre
   if (token && to.meta.guestOnly) return next('/tabs/tab1');
+
+  // Si requereix permisos d'administrador
+  if (to.meta.requiresAdmin) {
+    const { user, fetchUser } = useAuth();
+    let currentUser = user.value;
+    currentUser ??= await fetchUser();
+
+    if (currentUser?.role !== 'admin') return next('/tabs/tab1');
+  }
 
   next();
 });

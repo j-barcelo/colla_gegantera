@@ -1,0 +1,113 @@
+@use '@shared/styles' as *;
+
+.c-notification {
+  position: relative;
+  box-sizing: border-box;
+  display: block;
+  width: 100%;
+  padding-block-start: env(safe-area-inset-top, 0);
+  overflow: hidden;
+  color: var(--cl-light);
+  background-color: var(--cl-dark);
+  border-radius: 0;
+  box-shadow: 0 to-rem(4) to-rem(20) rgb(0 0 0 / 40%);
+
+  &--dark {
+    background-color: var(--cl-dark);
+  }
+
+  &--primary {
+    background-color: var(--cl-primary);
+  }
+
+  &--danger {
+    background-color: var(--cl-danger);
+  }
+
+  &__body {
+    display: flex;
+    gap: to-rem(16);
+    align-items: flex-start;
+    justify-content: space-between;
+    padding-block: to-rem(16) to-rem(18);
+    padding-inline: to-rem(20);
+  }
+
+  &__content {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  &__title {
+    margin-block: 0 to-rem(4);
+    font-weight: var(--fw-bold);
+    color: var(--cl-light);
+
+    @include font('text-sm');
+  }
+
+  &__message {
+    margin: 0;
+    color: rgb(255 255 255 / 92%);
+
+    @include font('base');
+  }
+
+  &__close {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: to-rem(28);
+    height: to-rem(28);
+    padding: 0;
+    margin-inline-end: to-rem(-4);
+    color: var(--cl-light);
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    border-radius: to-rem(4);
+    transition: opacity 0.2s ease;
+
+    &:hover,
+    &:focus-visible {
+      opacity: 70%;
+    }
+  }
+
+  &__close-icon {
+    width: to-rem(20);
+    height: to-rem(20);
+    fill: none;
+    stroke: currentcolor;
+    stroke-width: 2.2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  &__progress-track {
+    position: absolute;
+    inset-block-end: 0;
+    inset-inline: 0;
+    height: to-rem(4);
+    background-color: rgb(255 255 255 / 20%);
+  }
+
+  &__progress-bar {
+    width: 100%;
+    height: 100%;
+    background-color: var(--cl-light);
+    animation: c-notification-shrink var(--notification-duration, 4000ms) linear forwards;
+  }
+}
+
+@keyframes c-notification-shrink {
+  from {
+    width: 100%;
+  }
+
+  to {
+    width: 0%;
+  }
+}

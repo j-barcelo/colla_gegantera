@@ -1,0 +1,40 @@
+@use '@shared/styles' as *;
+
+.c-notification-host {
+  position: fixed;
+  inset-block-start: 0;
+  inset-inline: 0;
+  z-index: 99999;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  pointer-events: none;
+
+  &__list {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    pointer-events: none;
+
+    > * {
+      pointer-events: auto;
+    }
+  }
+}
+
+.c-notification-transition {
+  &-enter-active,
+  &-leave-active {
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  &-enter-from {
+    opacity: 0%;
+    transform: translateY(-100%);
+  }
+
+  &-leave-to {
+    opacity: 0%;
+    transform: translateY(-100%);
+  }
+}

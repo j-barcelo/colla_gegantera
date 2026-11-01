@@ -1,17 +1,20 @@
 export type UserRole = 'admin' | 'member';
 
 export interface User {
-  id: number;
+  id: number | string;
   name: string;
   surname?: string | null;
   username?: string | null;
   email: string;
-  role?: UserRole | string;
+  status?: 'pending' | 'active' | 'suspended';
+  role?: UserRole;
+  roles?: string[];
   phone?: string | null;
   address?: string | null;
   avatar?: string | null;
   created_at?: string;
   updated_at?: string;
+  is_pending?: boolean;
 }
 
 export interface AuthResponse {

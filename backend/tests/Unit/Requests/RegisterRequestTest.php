@@ -25,11 +25,14 @@ class RegisterRequestTest extends TestCase {
         $this->assertContains('nullable', $rules['device_name']);
     }
 
-    public function test_email_must_be_valid_and_unique(): void {
+    public function test_email_must_be_valid_and_require_invitation(): void {
         $rules = (new RegisterRequest)->rules();
 
         $this->assertContains('email', $rules['email']);
-        $this->assertContains('unique:users,email', $rules['email']);
+        $this->assertTrue(
+            collect($rules['email'])->contains(fn ($rule) => is_object($rule) && str_contains(get_class($rule), 'Exists')),
+            'Email rule must check existence in users table with pending status',
+        );
     }
 
     public function test_password_requires_minimum_length_and_confirmation(): void {

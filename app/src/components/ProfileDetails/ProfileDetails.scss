@@ -1,0 +1,58 @@
+@use '@shared/styles' as *;
+
+.c-profile-details {
+  position: relative;
+  box-sizing: border-box;
+  min-height: to-rem(320);
+  padding-block: to-rem(64) to-rem(40);
+  padding-inline: to-rem(20);
+  background-color: var(--cl-light);
+
+  &__info {
+    display: flex;
+    flex-direction: column;
+    gap: to-rem(20);
+  }
+
+  &__name {
+    margin: 0;
+    color: var(--cl-dark);
+
+    @include font('text-sm');
+  }
+
+  &__first-name {
+    font-weight: var(--fw-bold);
+  }
+
+  &__item {
+    margin: 0;
+    color: var(--cl-dark);
+    overflow-wrap: break-word;
+
+    @include font('text-sm');
+  }
+
+  &__prefix {
+    color: var(--cl-text-subtle);
+  }
+
+  &__actions {
+    margin-block-start: to-rem(16);
+  }
+
+  &__edit-btn {
+    gap: to-rem(14);
+    min-width: to-rem(150);
+  }
+
+  &__edit-icon {
+    width: to-rem(20);
+    height: to-rem(20);
+    fill: none;
+    stroke: currentcolor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+}

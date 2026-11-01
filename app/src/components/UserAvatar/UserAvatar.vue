@@ -6,7 +6,7 @@ import { computed, ref } from 'vue';
 interface Props {
   src?: string | null;
   alt?: string;
-  size?: 'sm' | 'xl';
+  size?: 'sm' | 'md' | 'xl';
   editable?: boolean;
   disabled?: boolean;
 }
@@ -37,9 +37,7 @@ const onFileChange = (event: Event): void => {
   const file = input.files?.[0];
   input.value = '';
 
-  if (file) {
-    emit('selectFile', file);
-  }
+  if (file) emit('selectFile', file);
 };
 
 defineExpose({
@@ -78,4 +76,3 @@ defineExpose({
 </template>
 
 <style lang="scss" src="./UserAvatar.scss"></style>
-

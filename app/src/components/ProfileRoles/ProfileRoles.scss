@@ -1,0 +1,82 @@
+@use '@shared/styles' as *;
+
+.c-profile-roles {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: to-rem(160);
+  padding-block: to-rem(34) to-rem(56);
+  padding-inline: to-rem(20);
+  color: var(--cl-light);
+  background-color: var(--cl-primary);
+
+  &__header {
+    display: flex;
+    gap: to-rem(12);
+    align-items: center;
+    justify-content: space-between;
+    margin-block-end: to-rem(20);
+  }
+
+  &__title {
+    margin: 0;
+    font-weight: var(--fw-bold);
+    color: var(--cl-light);
+
+    @include font('text-lg');
+  }
+
+  &__edit-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: to-rem(36);
+    height: to-rem(36);
+    padding: 0;
+    color: var(--cl-light);
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    border-radius: to-rem(6);
+    transition: background-color 0.2s ease;
+
+    &:hover,
+    &:focus-visible {
+      background-color: rgb(0 0 0 / 15%);
+    }
+  }
+
+  &__edit-icon {
+    width: to-rem(20);
+    height: to-rem(20);
+    fill: none;
+    stroke: currentcolor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  &__list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: to-rem(16) to-rem(12);
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+
+  &__item {
+    margin: 0;
+    font-weight: var(--fw-regular);
+    color: var(--cl-light);
+
+    @include font('text-sm');
+  }
+
+  &__empty {
+    margin: 0;
+    font-style: italic;
+    color: rgb(255 255 255 / 80%);
+
+    @include font('text-sm');
+  }
+}

@@ -1,6 +1,16 @@
 <script setup lang="ts">
 import { IonContent, IonIcon, IonPage } from '@ionic/vue';
-import { AppAlert, AppButton, AppInput, FORM_MESSAGES, useForm, VALIDATION_MESSAGES, validators } from '@shared';
+import {
+  ApiError,
+  AppAlert,
+  AppButton,
+  AppInput,
+  FORM_MESSAGES,
+  useForm,
+  useNotification,
+  VALIDATION_MESSAGES,
+  validators,
+} from '@shared';
 import { useAuth } from '@shared/composables/useAuth';
 import { alertCircleOutline } from 'ionicons/icons';
 import { ref } from 'vue';
@@ -8,6 +18,7 @@ import { useRouter } from 'vue-router';
 
 const router = useRouter();
 const { register, isLoading } = useAuth();
+const { notify } = useNotification();
 
 const name = ref('');
 const surname = ref('');
@@ -46,6 +57,20 @@ const handleRegister = async (): Promise<void> => {
     await router.push('/tabs/tab1');
   } catch (err: unknown) {
     handleServerErrors(err);
+
+    if (err instanceof ApiError && err.errors?.email) {
+      const emailMsg = err.errors.email[0] || '';
+      if (emailMsg.toLowerCase().includes('autoritzat')) {
+        errors.email = 'Correu no autoritzat.';
+        notify({
+          title: 'Registre no autoritzat',
+          message:
+            'Aquest correu no està a la llista d’admissions de la colla. Contacta amb un administrador per habilitar el teu registre.',
+          variant: 'danger',
+          duration: 5000,
+        });
+      }
+    }
   }
 };
 </script>

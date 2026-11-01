@@ -2,8 +2,10 @@
 
 namespace App\Http\Requests\Api;
 
+use App\Enums\UserStatus;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class RegisterRequest extends FormRequest {
     /**
@@ -22,9 +24,24 @@ class RegisterRequest extends FormRequest {
         return [
             'name' => ['required', 'string', 'max:255'],
             'surname' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
+            'email' => [
+                'required',
+                'string',
+                'email',
+                'max:255',
+                Rule::exists('users', 'email')->where(fn ($query) => $query->where('status', UserStatus::Pending->value)),
+            ],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             'device_name' => ['nullable', 'string', 'max:255'],
         ];
+    }
+
+    /**
+     * Get custom error messages for validator errors.
+     *
+     * @return array<string, string>
+     */
+    public function messages(): array {
+        return ['email.exists' => 'Correu no autoritzat per la colla.'];
     }
 }

@@ -8,6 +8,8 @@ import { defineConfig } from 'vitest/config';
 export default defineConfig({
   base: '/app/',
   server: {
+    host: true,
+    allowedHosts: true,
     proxy: {
       '/api': {
         target: process.env.VITE_API_URL || 'http://127.0.0.1:8000',
@@ -23,14 +25,17 @@ export default defineConfig({
     vue(),
     legacy(),
     VitePWA({
+      devOptions: {
+        enabled: true,
+      },
       registerType: 'autoUpdate',
       includeAssets: ['favicon.svg', 'favicon.png'],
       manifest: {
         name: 'Colla Gegantera - Gestió',
         short_name: 'Colla',
         description: 'App de gestió interna per a colles geganteres',
-        theme_color: '#85144b',
-        background_color: '#85144b',
+        theme_color: '#ffffffff',
+        background_color: '#00aae3',
         display: 'standalone',
         start_url: '/app/',
         scope: '/app/',

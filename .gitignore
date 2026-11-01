@@ -57,6 +57,7 @@ backend/database/*.sqlite-journal
 # ==============================================================================
 app/dist/
 app/dist-ssr/
+app/dev-dist/
 app/.vite-temp/
 
 # Proves Cypress (captures i vídeos)

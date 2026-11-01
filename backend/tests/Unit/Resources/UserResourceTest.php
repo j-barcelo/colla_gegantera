@@ -25,7 +25,7 @@ class UserResourceTest extends TestCase {
         $data = (new UserResource($user))->toArray(Request::create('/'));
 
         $this->assertSame(['id', 'name', 'surname', 'username', 'email',
-            'role', 'phone', 'address', 'avatar', 'created_at', 'updated_at',
+            'status', 'is_pending', 'role', 'roles', 'phone', 'address', 'avatar', 'created_at', 'updated_at',
         ], array_keys($data));
         $this->assertSame(7, $data['id']);
         $this->assertSame('Miquel', $data['name']);

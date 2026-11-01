@@ -2,14 +2,14 @@
 
 namespace Tests\Unit\Models;
 
-use App\Enums\UserRole;
+use App\Models\Role;
 use App\Models\User;
 use PHPUnit\Framework\TestCase;
 
 class UserTest extends TestCase {
     public function test_only_profile_fields_are_mass_assignable(): void {
         $this->assertSame(
-            ['name', 'surname', 'username', 'email', 'phone', 'address', 'avatar', 'password'],
+            ['name', 'surname', 'username', 'email', 'phone', 'address', 'avatar', 'password', 'status'],
             (new User)->getFillable(),
         );
     }
@@ -30,10 +30,12 @@ class UserTest extends TestCase {
 
     public function test_identifies_administrator_role_correctly(): void {
         $admin = new User;
-        $admin->role = UserRole::Admin;
+        $adminRole = new Role(['name' => Role::ADMIN_NAME, 'slug' => Role::ADMIN_SLUG]);
+        $admin->setRelation('roles', collect([$adminRole]));
 
         $member = new User;
-        $member->role = UserRole::Member;
+        $memberRole = new Role(['name' => 'Portadors', 'slug' => 'portadors']);
+        $member->setRelation('roles', collect([$memberRole]));
 
         $this->assertTrue($admin->isAdmin());
         $this->assertFalse($member->isAdmin());

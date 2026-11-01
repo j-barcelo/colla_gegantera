@@ -2,7 +2,6 @@
 
 namespace Tests\Feature;
 
-use App\Enums\UserRole;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
@@ -53,7 +52,6 @@ class InstallTest extends TestCase {
         $this->assertNotNull($admin);
         $this->assertSame(self::ADMIN_NAME, $admin->name);
         $this->assertSame(self::ADMIN_SURNAME, $admin->surname);
-        $this->assertSame(UserRole::Admin, $admin->role);
         $this->assertTrue($admin->isAdmin());
         $this->assertTrue(Hash::check(self::ADMIN_PASSWORD, $admin->password));
     }

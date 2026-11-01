@@ -1,0 +1,27 @@
+@use '@shared/styles' as *;
+
+.c-admin-page {
+  --background: var(--cl-light);
+
+  &__toolbar {
+    --background: var(--cl-light);
+    --color: var(--cl-dark);
+    --border-color: transparent;
+
+    padding-inline: to-rem(4);
+  }
+
+  &__back-btn {
+    --color: var(--cl-dark);
+
+    font-size: to-rem(24);
+  }
+
+  &__content {
+    --background: var(--cl-light);
+    --padding-bottom: #{to-rem(24)};
+    --padding-end: 0;
+    --padding-start: 0;
+    --padding-top: 0;
+  }
+}

@@ -149,4 +149,15 @@ describe('useAuth composable', () => {
     expect(isLoading.value).toBe(false);
     expect(error.value).toBeNull();
   });
+
+  it('determines whether current user is admin based on role', async () => {
+    const adminUser: User = { id: 1, name: 'Admin', email: 'admin@example.com', role: 'admin' };
+
+    vi.mocked(apiModule.apiFetch).mockResolvedValueOnce({ user: adminUser });
+
+    const { fetchUser, isAdmin } = useAuth();
+    await fetchUser();
+
+    expect(isAdmin.value).toBe(true);
+  });
 });

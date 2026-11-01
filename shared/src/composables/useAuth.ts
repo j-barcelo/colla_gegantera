@@ -134,13 +134,19 @@ async function updateAvatar(file: File): Promise<User> {
   });
 }
 
+export function syncCurrentUser(updatedUser: Partial<User>): void {
+  if (currentUser.value) currentUser.value = { ...currentUser.value, ...updatedUser };
+}
+
 export function useAuth() {
   const isAuthenticated = computed(() => !!currentToken.value && !!currentUser.value);
+  const isAdmin = computed(() => currentUser.value?.role === 'admin');
 
   return {
     user: computed(() => currentUser.value),
     token: computed(() => currentToken.value),
     isAuthenticated,
+    isAdmin,
     isLoading: computed(() => isLoading.value),
     error: computed(() => authError.value),
     login,
@@ -151,5 +157,6 @@ export function useAuth() {
     updatePassword,
     updateAvatar,
     syncAuthToken,
+    syncCurrentUser,
   };
 }

@@ -14,6 +14,11 @@
     height: to-rem(26);
   }
 
+  &--md {
+    width: to-rem(44);
+    height: to-rem(44);
+  }
+
   &--xl {
     width: to-rem(140);
     height: to-rem(140);
@@ -59,4 +64,3 @@
     stroke-linejoin: round;
   }
 }
-

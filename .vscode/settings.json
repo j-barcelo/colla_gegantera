@@ -33,6 +33,14 @@
   "laravel-pint.configPath": "backend/pint.json",
   "laravel-pint.executablePath": "backend/vendor/bin/pint",
   "intelephense.environment.phpVersion": "8.3.0",
+  "intelephense.environment.includePaths": [
+    "backend",
+    "backend/app",
+    "backend/vendor",
+    "backend/database/factories",
+    "backend/database/seeders",
+    "web/src"
+  ],
   "[blade]": {
     "editor.defaultFormatter": "shufo.vscode-blade-formatter"
   },

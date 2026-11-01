@@ -26,6 +26,8 @@ class AuthTest extends TestCase {
     }
 
     public function test_user_can_register_with_valid_data(): void {
+        User::factory()->pending()->create(['email' => self::TEST_EMAIL]);
+
         $payload = [
             'name' => self::TEST_NAME,
             'surname' => self::TEST_SURNAME,
@@ -66,6 +68,20 @@ class AuthTest extends TestCase {
         ]);
 
         $response->assertUnprocessable()->assertJsonValidationErrors(['name', 'surname', 'email', 'password']);
+    }
+
+    public function test_user_cannot_register_if_email_is_not_allowed(): void {
+        $payload = [
+            'name' => 'Usuari No Autoritzat',
+            'surname' => 'Sense Invitacio',
+            'email' => 'no_autoritzat@geganters.cat',
+            'password' => self::TEST_PASSWORD,
+            'password_confirmation' => self::TEST_PASSWORD,
+        ];
+
+        $response = $this->postJson(self::REGISTER_URL, $payload);
+
+        $response->assertUnprocessable()->assertJsonValidationErrors(['email']);
     }
 
     public function test_registration_fails_if_email_is_already_taken(): void {

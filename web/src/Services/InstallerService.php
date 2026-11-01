@@ -2,7 +2,8 @@
 
 namespace Web\Services;
 
-use App\Enums\UserRole;
+use App\Enums\UserStatus;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
@@ -14,7 +15,11 @@ class InstallerService {
      */
     public function isInstalled(): bool {
         try {
-            return Schema::hasTable('users') && User::query()->where('role', UserRole::Admin)->exists();
+            if (!Schema::hasTable('users') || !Schema::hasTable('roles') || !Schema::hasTable('role_user')) {
+                return false;
+            }
+
+            return User::whereHas('roles', fn ($q) => $q->whereIn('slug', ['admin', Role::ADMIN_SLUG])->orWhereIn('name', ['admin', Role::ADMIN_NAME]))->exists();
         } catch (\Throwable) {
             return false;
         }
@@ -32,14 +37,20 @@ class InstallerService {
 
         Artisan::call('migrate', ['--force' => true, '--no-interaction' => true]);
 
-        $admin = new User([
+        $adminRole = Role::firstOrCreate(
+            ['slug' => Role::ADMIN_SLUG],
+            ['name' => Role::ADMIN_NAME, 'type' => 'system'],
+        );
+
+        $admin = User::create([
             'name' => (string) $data['admin_name'],
             'surname' => (isset($data['admin_surname']) && $data['admin_surname'] !== '') ? (string) $data['admin_surname'] : null,
             'email' => (string) $data['admin_email'],
             'password' => (string) $data['admin_password'],
+            'status' => UserStatus::Active,
         ]);
-        $admin->role = UserRole::Admin;
-        $admin->save();
+
+        $admin->roles()->syncWithoutDetaching([$adminRole->id]);
 
         $this->ensureStorageLink();
 

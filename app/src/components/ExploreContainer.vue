@@ -48,8 +48,8 @@ onMounted(async () => {
   top: 50%;
   right: 0;
   left: 0;
-  transform: translateY(-50%);
   text-align: center;
+  transform: translateY(-50%);
 
   &__img {
     margin-bottom: to-rem(16);
@@ -58,33 +58,37 @@ onMounted(async () => {
 
   h2 {
     margin-bottom: to-rem(16);
+
     @include font('title-md');
   }
+}
 
-  .c-api-status {
-    max-width: to-rem(360);
-    padding: to-rem(16);
-    margin: to-rem(16) auto 0;
-    border: to-rem(1) solid var(--cl-border-light);
-    border-radius: to-rem(6);
+.c-api-status {
+  max-width: to-rem(360);
+  padding: to-rem(16);
+  margin: to-rem(16) auto 0;
+  border: to-rem(1) solid var(--cl-border-light);
+  border-radius: to-rem(6);
 
-    strong {
-      display: block;
-      margin-bottom: to-rem(8);
-      @include font('text-sm');
-    }
+  strong {
+    display: block;
+    margin-bottom: to-rem(8);
 
-    p {
-      margin: 0;
-      @include font('base');
-    }
+    @include font('text-sm');
+  }
 
-    small {
-      display: block;
-      margin-top: to-rem(4);
-      color: var(--cl-text-muted);
-      @include font('small');
-    }
+  p {
+    margin: 0;
+
+    @include font('base');
+  }
+
+  small {
+    display: block;
+    margin-top: to-rem(4);
+    color: var(--cl-text-muted);
+
+    @include font('small');
   }
 }
 </style>
