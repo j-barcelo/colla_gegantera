@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { materialPaths } from '@shared';
 import type { User, UserRole } from '@shared/types/auth';
 import { computed } from 'vue';
 
@@ -42,9 +43,8 @@ const assignedRoles = computed<string[]>(() => {
         aria-label="Modificar rols"
         @click="emit('edit')"
       >
-        <svg class="c-profile-roles__edit-icon" viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L8 18l-4 1 1-4L16.5 3.5Z" />
-          <path d="M15 5l4 4" />
+        <svg class="c-profile-roles__edit-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path :d="materialPaths.edit" />
         </svg>
       </button>
     </div>

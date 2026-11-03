@@ -1,8 +1,16 @@
 <script setup lang="ts">
 import { IonContent, IonIcon, IonPage } from '@ionic/vue';
-import { AppAlert, AppButton, AppInput, FORM_MESSAGES, useForm, VALIDATION_MESSAGES, validators } from '@shared';
+import {
+  AppAlert,
+  AppButton,
+  AppInput,
+  FORM_MESSAGES,
+  iconError,
+  useForm,
+  VALIDATION_MESSAGES,
+  validators,
+} from '@shared';
 import { useAuth } from '@shared/composables/useAuth';
-import { alertCircleOutline } from 'ionicons/icons';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 
@@ -30,7 +38,7 @@ const handleLogin = async (): Promise<void> => {
       device_name: 'Ionic App',
     });
 
-    await router.push('/tabs/tab1');
+    await router.push('/tabs/home');
   } catch (err: unknown) {
     handleServerErrors(err);
   }
@@ -60,7 +68,7 @@ const handleLogin = async (): Promise<void> => {
           <!-- Global alert if unexpected connection error -->
           <AppAlert v-if="generalError" variant="danger">
             <template #icon>
-              <ion-icon :icon="alertCircleOutline" aria-hidden="true" />
+              <ion-icon :icon="iconError" aria-hidden="true" />
             </template>
             {{ generalError }}
           </AppAlert>

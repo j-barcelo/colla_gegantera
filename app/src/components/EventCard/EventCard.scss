@@ -1,0 +1,131 @@
+@use '@shared/styles' as *;
+
+.c-event-card {
+  display: flex;
+  flex-direction: column;
+  gap: to-rem(6);
+  cursor: pointer;
+
+  &__title {
+    margin: 0;
+
+    @include font('text-lg', 1.15);
+
+    font-weight: var(--fw-bold);
+    color: var(--cl-light);
+    text-transform: uppercase;
+    letter-spacing: to-rem(0.5);
+  }
+
+  &__main {
+    display: flex;
+    gap: to-rem(14);
+    align-items: center;
+  }
+
+  &__status {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: to-rem(60);
+    height: to-rem(60);
+    cursor: pointer;
+    border: none;
+    border-radius: to-rem(10);
+
+    &--confirmed {
+      color: var(--cl-primary);
+      background-color: var(--cl-success);
+    }
+
+    &--pending {
+      color: var(--cl-primary);
+      background-color: var(--cl-light);
+    }
+  }
+
+  &__check-icon,
+  &__dash-icon {
+    width: to-rem(42);
+    height: to-rem(42);
+  }
+
+  &__date {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    line-height: 1;
+  }
+
+  &__day {
+    @include font('title-md', 1);
+
+    font-weight: var(--fw-bold);
+    color: var(--cl-light);
+  }
+
+  &__month {
+    margin-block-start: to-rem(4);
+
+    @include font('text-sm');
+
+    font-weight: var(--fw-bold);
+    color: var(--cl-light);
+    text-transform: uppercase;
+  }
+
+  &__meta {
+    display: flex;
+    flex-direction: column;
+    gap: to-rem(4);
+    margin-inline-start: auto;
+  }
+
+  &__meta-item {
+    display: inline-flex;
+    gap: to-rem(6);
+    align-items: center;
+
+    @include font('text-sm');
+
+    color: var(--cl-light);
+
+    ion-icon {
+      width: to-rem(20);
+      height: to-rem(20);
+
+      @include font('text-md');
+    }
+  }
+
+  &__footer {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-block-start: to-rem(8);
+  }
+
+  &__count {
+    @include font('base');
+
+    color: var(--cl-light);
+
+    strong {
+      font-weight: var(--fw-bold);
+    }
+  }
+
+  &__roles {
+    @include font('base');
+
+    color: rgb(255 255 255 / 90%);
+  }
+
+  &__details-btn {
+    min-height: to-rem(36);
+    padding-block: to-rem(6);
+    padding-inline: to-rem(18);
+    font-weight: var(--fw-bold);
+    letter-spacing: to-rem(0.5);
+  }
+}

@@ -10,6 +10,7 @@ $cl-surface-muted: var(--cl-surface-muted);
 $cl-border: var(--cl-border);
 $cl-border-light: var(--cl-border-light);
 $cl-danger: var(--cl-danger);
+$cl-success: var(--cl-success);
 $cl-overlay: var(--cl-overlay);
 
 /* ══════════════════════════════════════
@@ -61,7 +62,7 @@ $lh-small-md: to-rem(15);
 $fonts: (
   'display': (lg: (fs: $fs-display, lh: $lh-display), base: (fs: $fs-title-md, lh: $lh-title-md)),
   'title-lg': (lg: (fs: $fs-title-lg, lh: $lh-title-lg), base: (fs: $fs-title-md, lh: $lh-title-md)),
-  'title-md': (lg: (fs: $fs-title-md, lh: $lh-title-md), base: (fs: $fs-text-lg, lh: $lh-text-lg)),
+  'title-md': (lg: (fs: $fs-title-md, lh: $lh-title-md), base: (fs: $fs-title-sm, lh: $lh-title-sm)),
   'title-sm': (lg: (fs: $fs-title-sm, lh: $lh-title-sm), base: (fs: $fs-text-lg, lh: $lh-text-lg)),
   'text-lg': (lg: (fs: $fs-text-lg, lh: $lh-text-lg), base: (fs: $fs-text-md, lh: $lh-text-md)),
   'text-md': (lg: (fs: $fs-text-md, lh: $lh-text-md), base: (fs: $fs-text-sm, lh: $lh-text-sm)),

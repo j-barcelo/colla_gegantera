@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import { IonContent, IonIcon, IonModal } from '@ionic/vue';
-import { AppAlert, AppButton, AppInput } from '@shared';
+import { AppAlert, AppButton, AppInput, iconClose } from '@shared';
 import type { UpdateProfileData, User } from '@shared/types/auth';
 import { validators } from '@shared/utils/validators';
-import { closeOutline } from 'ionicons/icons';
 import { ref, watch } from 'vue';
 
 interface Props {
@@ -117,7 +116,7 @@ const handleSubmit = (): void => {
         <header class="c-edit-user-modal__header">
           <h2 id="edit-user-title" class="c-edit-user-modal__title">{{ title }}</h2>
           <button type="button" class="c-edit-user-modal__close" aria-label="Tancar" @click="handleClose">
-            <ion-icon :icon="closeOutline" aria-hidden="true" />
+            <ion-icon :icon="iconClose" aria-hidden="true" />
           </button>
         </header>
 

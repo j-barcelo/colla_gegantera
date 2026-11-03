@@ -1,0 +1,192 @@
+@use '@shared/styles' as *;
+
+.c-home-page {
+  &__header {
+    position: sticky;
+    inset-block-start: 0;
+    z-index: 10;
+    padding-block: to-rem(18) to-rem(12);
+    padding-inline: to-rem(20);
+    background-color: var(--cl-light);
+  }
+
+  &__main {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__title {
+    @include font('text-lg');
+
+    font-weight: var(--fw-bold);
+    color: var(--cl-dark);
+    letter-spacing: to-rem(-0.5);
+  }
+
+  &__actions {
+    display: flex;
+    gap: to-rem(12);
+    align-items: center;
+  }
+
+  &__admin-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--cl-dark);
+    cursor: pointer;
+    background-color: transparent;
+    border: none;
+
+    ion-icon {
+      width: to-rem(28);
+      height: to-rem(28);
+
+      @include font('text-lg');
+    }
+  }
+
+  &__bell-btn {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--cl-dark);
+    text-decoration: none;
+    cursor: pointer;
+    background-color: transparent;
+    border: none;
+
+    ion-icon {
+      width: to-rem(32);
+      height: to-rem(32);
+
+      @include font('title-sm');
+    }
+  }
+
+  &__bell-badge {
+    position: absolute;
+    inset-block-start: to-rem(-4);
+    inset-inline-start: to-rem(-8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: to-rem(18);
+    height: to-rem(18);
+
+    @include font('small');
+
+    font-weight: var(--fw-bold);
+    color: var(--cl-light);
+    background-color: var(--cl-primary);
+    border-radius: 50%;
+  }
+
+  &__sub-bar {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-block-start: to-rem(14);
+  }
+
+  &__filter-btn {
+    display: inline-flex;
+    gap: to-rem(8);
+    align-items: center;
+
+    @include font('text-sm');
+
+    font-weight: var(--fw-semibold);
+    color: var(--cl-dark);
+    cursor: pointer;
+    background-color: transparent;
+    border: none;
+
+    ion-icon {
+      width: to-rem(22);
+      height: to-rem(22);
+
+      @include font('text-md');
+    }
+  }
+
+  &__toggle-btn {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--cl-dark);
+    cursor: pointer;
+    background-color: transparent;
+    border: none;
+
+    ion-icon {
+      width: to-rem(30);
+      height: to-rem(30);
+
+      @include font('title-sm');
+    }
+  }
+
+  &__cal-num {
+    position: absolute;
+    inset-block-start: to-rem(10.5);
+
+    @include font('small');
+
+    font-weight: var(--fw-bold);
+    color: var(--cl-dark);
+  }
+
+  &__menu {
+    position: absolute;
+    inset-block-start: 100%;
+    inset-inline-start: 0;
+    z-index: 20;
+    width: to-rem(220);
+    padding-block: to-rem(6);
+    padding-inline: 0;
+    margin-block-start: to-rem(6);
+    list-style: none;
+    background-color: var(--cl-light);
+    border: to-rem(1) solid var(--cl-border-light);
+    border-radius: to-rem(10);
+    box-shadow: 0 to-rem(10) to-rem(20) rgb(0 0 0 / 10%);
+  }
+
+  &__menu-item {
+    padding: 0;
+
+    &--active .c-home-page__menu-btn {
+      font-weight: var(--fw-bold);
+      color: var(--cl-primary);
+      background-color: var(--cl-surface-muted);
+    }
+  }
+
+  &__menu-btn {
+    width: 100%;
+    padding-block: to-rem(8);
+    padding-inline: to-rem(14);
+
+    @include font('base');
+
+    font-weight: var(--fw-regular);
+    color: var(--cl-text-muted);
+    text-align: start;
+    cursor: pointer;
+    background-color: transparent;
+    border: none;
+
+    &:hover {
+      background-color: var(--cl-surface-muted);
+    }
+  }
+
+  &__content {
+    --background: var(--cl-primary);
+  }
+}

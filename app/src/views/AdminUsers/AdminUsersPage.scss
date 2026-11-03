@@ -14,7 +14,7 @@
   &__back-btn {
     --color: var(--cl-dark);
 
-    font-size: to-rem(24);
+    @include font('text-md');
   }
 
   &__content {

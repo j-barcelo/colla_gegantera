@@ -79,11 +79,7 @@
   &__close-icon {
     width: to-rem(20);
     height: to-rem(20);
-    fill: none;
-    stroke: currentcolor;
-    stroke-width: 2.2;
-    stroke-linecap: round;
-    stroke-linejoin: round;
+    fill: currentcolor;
   }
 
   &__progress-track {

@@ -7,7 +7,7 @@ import TabsPage from '../views/Tabs/TabsPage.vue';
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
-    redirect: '/tabs/tab1',
+    redirect: '/tabs/home',
   },
   {
     path: '/login',
@@ -25,8 +25,9 @@ const routes: Array<RouteRecordRaw> = [
     path: '/tabs/',
     component: TabsPage,
     children: [
-      { path: '', redirect: '/tabs/tab1' },
-      { path: 'tab1', component: () => import('@/views/Tab1Page.vue') },
+      { path: '', redirect: '/tabs/home' },
+      { path: 'home', component: () => import('@/views/Home/HomePage.vue') },
+      { path: 'tab1', redirect: '/tabs/home' },
       { path: 'profile', component: () => import('@/views/Profile/ProfilePage.vue') },
     ],
   },
@@ -51,15 +52,20 @@ router.beforeEach(async (to: RouteLocationNormalized, _from: RouteLocationNormal
   if (!token && !isPublicRoute) return next({ name: 'Login' });
 
   // Si ja té sessió iniciada i va a login o registre
-  if (token && to.meta.guestOnly) return next('/tabs/tab1');
+  if (token && to.meta.guestOnly) return next('/tabs/home');
+
+  // Si té sessió activa i no s'ha carregat l'usuari en memòria
+  if (token && !isPublicRoute) {
+    const { user, fetchUser } = useAuth();
+    if (!user.value) {
+      await fetchUser();
+    }
+  }
 
   // Si requereix permisos d'administrador
   if (to.meta.requiresAdmin) {
-    const { user, fetchUser } = useAuth();
-    let currentUser = user.value;
-    currentUser ??= await fetchUser();
-
-    if (currentUser?.role !== 'admin') return next('/tabs/tab1');
+    const { user } = useAuth();
+    if (user.value?.role !== 'admin') return next('/tabs/home');
   }
 
   next();

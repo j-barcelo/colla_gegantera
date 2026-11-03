@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { resolveStorageUrl } from '@shared';
+import { materialPaths, resolveStorageUrl } from '@shared';
 import defaultAvatar from '@shared/assets/images/default-avatar.svg';
 import { computed, ref } from 'vue';
 
@@ -66,9 +66,8 @@ defineExpose({
         :disabled="disabled"
         @click="openFilePicker"
       >
-        <svg class="c-user-avatar__edit-icon" viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L8 18l-4 1 1-4L16.5 3.5Z" />
-          <path d="M4 21h16" />
+        <svg class="c-user-avatar__edit-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path :d="materialPaths.edit" />
         </svg>
       </button>
     </template>

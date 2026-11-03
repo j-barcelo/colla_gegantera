@@ -4,8 +4,7 @@ import UserAvatar from '@/components/UserAvatar/UserAvatar.vue';
 import UserDetailModal from '@/components/UserDetailModal/UserDetailModal.vue';
 import { alertController, IonButton, IonIcon, IonSpinner } from '@ionic/vue';
 import type { UpdateProfileData, User } from '@shared';
-import { useAdminUsers, useAuth, useNotification } from '@shared';
-import { optionsOutline, personAddOutline } from 'ionicons/icons';
+import { iconFilterList, iconPersonAdd, useAdminUsers, useAuth, useNotification } from '@shared';
 import { onMounted, ref, watch } from 'vue';
 
 const emit = defineEmits<{
@@ -268,7 +267,7 @@ onMounted(async () => {
     <!-- Subbarra amb filtres i comptador -->
     <section class="c-admin-users-section__subbar">
       <button type="button" class="c-admin-users-section__filter-indicator">
-        <ion-icon :icon="optionsOutline" class="c-admin-users-section__filter-icon" />
+        <ion-icon :icon="iconFilterList" class="c-admin-users-section__filter-icon" />
         <span class="c-admin-users-section__filter-label">Veure tots</span>
       </button>
       <div class="c-admin-users-section__counter">
@@ -279,7 +278,7 @@ onMounted(async () => {
     <!-- Botó per afegir nou usuari -->
     <div class="c-admin-users-section__action-bar">
       <button type="button" class="c-admin-users-section__add-btn" @click="handleAddNewUser">
-        <ion-icon :icon="personAddOutline" class="c-admin-users-section__add-icon" />
+        <ion-icon :icon="iconPersonAdd" class="c-admin-users-section__add-icon" />
         <span>Afegir nou usuari</span>
       </button>
     </div>

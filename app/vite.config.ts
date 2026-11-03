@@ -76,6 +76,6 @@ export default defineConfig({
   test: {
     globals: true,
     environment: 'jsdom',
-    include: ['tests/unit/**/*.spec.ts', '../shared/src/**/*.spec.ts'],
+    include: ['tests/unit/**/*.spec.ts', 'src/**/*.spec.ts', '../shared/src/**/*.spec.ts'],
   },
 });

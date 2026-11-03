@@ -4,8 +4,7 @@ import ProfileRoles from '@/components/ProfileRoles/ProfileRoles.vue';
 import UserAvatar from '@/components/UserAvatar/UserAvatar.vue';
 import { IonContent, IonIcon, IonModal } from '@ionic/vue';
 import type { User } from '@shared';
-import { AppButton } from '@shared';
-import { closeOutline } from 'ionicons/icons';
+import { AppButton, iconClose } from '@shared';
 import { computed } from 'vue';
 
 interface Props {
@@ -45,7 +44,7 @@ const userHandle = computed(() => {
             </div>
 
             <button type="button" class="c-profile-header__logout" aria-label="Tancar" @click="emit('close')">
-              <ion-icon :icon="closeOutline" aria-hidden="true" />
+              <ion-icon :icon="iconClose" aria-hidden="true" />
             </button>
           </div>
 

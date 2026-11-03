@@ -1,0 +1,10 @@
+@use '@shared/styles' as *;
+
+.c-events-list {
+  display: flex;
+  flex-direction: column;
+  gap: to-rem(36);
+  padding: to-rem(24) to-rem(20) to-rem(48);
+  color: var(--cl-light);
+  background-color: var(--cl-primary);
+}

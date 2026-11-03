@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import UserAvatar from '@/components/UserAvatar/UserAvatar.vue';
 import { IonContent, IonIcon, IonModal } from '@ionic/vue';
-import { AppAlert, AppButton } from '@shared';
-import { closeOutline } from 'ionicons/icons';
+import { AppAlert, AppButton, iconClose } from '@shared';
 
 interface Props {
   isOpen: boolean;
@@ -38,7 +37,7 @@ const handleClose = (): void => {
         <header class="c-avatar-preview-modal__header">
           <h2 id="avatar-modal-title" class="c-avatar-preview-modal__title">Previsualització de la imatge</h2>
           <button type="button" class="c-avatar-preview-modal__close" aria-label="Tancar" @click="handleClose">
-            <ion-icon :icon="closeOutline" aria-hidden="true" />
+            <ion-icon :icon="iconClose" aria-hidden="true" />
           </button>
         </header>
 

@@ -9,7 +9,7 @@
 
   &__item {
     --color: var(--cl-text-subtle);
-    --color-selected: var(--cl-dark);
+    --color-selected: var(--cl-primary);
 
     position: relative;
     padding-block-end: to-rem(6);
@@ -19,6 +19,8 @@
     font-weight: var(--fw-regular);
 
     ion-icon {
+      width: to-rem(22);
+      height: to-rem(22);
       margin-block-end: to-rem(4);
 
       @include font('text-md');
@@ -26,6 +28,14 @@
 
     &.tab-selected {
       font-weight: var(--fw-bold);
+
+      ion-icon {
+        color: var(--cl-primary);
+      }
+
+      ion-label {
+        color: var(--cl-dark);
+      }
 
       .c-app-tab-bar__avatar {
         border-color: var(--cl-primary);

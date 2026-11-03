@@ -43,7 +43,10 @@
   }
 
   &__filter-icon {
-    font-size: to-rem(20);
+    width: to-rem(22);
+    height: to-rem(22);
+
+    @include font('text-md');
   }
 
   &__filter-label {
@@ -88,7 +91,7 @@
   }
 
   &__add-icon {
-    font-size: to-rem(24);
+    @include font('text-md');
   }
 
   &__list-section {
@@ -216,4 +219,3 @@
     text-align: center;
   }
 }
-

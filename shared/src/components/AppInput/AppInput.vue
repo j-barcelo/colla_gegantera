@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { materialPaths } from '../../icons';
 import { computed, ref } from 'vue';
 
 interface Props {
@@ -107,18 +108,11 @@ defineExpose({
         :aria-label="showPassword ? 'Amaga la contrasenya' : 'Mostra la contrasenya'"
         @click="showPassword = !showPassword"
       >
-        <svg v-if="showPassword" class="c-input__icon" viewBox="0 0 512 512" aria-hidden="true">
-          <path
-            d="M255.66 112c-77.94 0-157.89 45.11-220.83 135.33a16 16 0 0 0-.27 17.77C82.92 340.8 161.8 400 255.66 400c92.84 0 173.34-59.38 221.79-135.25a16.14 16.14 0 0 0 0-17.47C428.89 172.28 347.8 112 255.66 112Z"
-          />
-          <circle cx="256" cy="256" r="80" />
-          <line x1="80" y1="80" x2="432" y2="432" />
+        <svg v-if="showPassword" class="c-input__icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path :d="materialPaths.visibilityOff" />
         </svg>
-        <svg v-else class="c-input__icon" viewBox="0 0 512 512" aria-hidden="true">
-          <path
-            d="M255.66 112c-77.94 0-157.89 45.11-220.83 135.33a16 16 0 0 0-.27 17.77C82.92 340.8 161.8 400 255.66 400c92.84 0 173.34-59.38 221.79-135.25a16.14 16.14 0 0 0 0-17.47C428.89 172.28 347.8 112 255.66 112Z"
-          />
-          <circle cx="256" cy="256" r="80" />
+        <svg v-else class="c-input__icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path :d="materialPaths.visibility" />
         </svg>
       </button>
     </div>

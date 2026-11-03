@@ -8,9 +8,17 @@ import ProfileSecurity from '@/components/ProfileSecurity/ProfileSecurity.vue';
 import UserAvatar from '@/components/UserAvatar/UserAvatar.vue';
 import { IonContent, IonIcon, IonPage, onIonViewWillEnter } from '@ionic/vue';
 import type { UpdatePasswordData, UpdateProfileData } from '@shared';
-import { ApiError, AppAlert, FORM_MESSAGES, optimizeAvatarToWebp, useNotification, validators } from '@shared';
+import {
+  ApiError,
+  AppAlert,
+  FORM_MESSAGES,
+  iconError,
+  iconLogout,
+  optimizeAvatarToWebp,
+  useNotification,
+  validators,
+} from '@shared';
 import { useAuth } from '@shared/composables/useAuth';
-import { alertCircleOutline, logOutOutline } from 'ionicons/icons';
 import { computed, onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
@@ -190,7 +198,7 @@ const handleLogout = async (): Promise<void> => {
             </div>
 
             <button type="button" class="c-profile-header__logout" aria-label="Tancar la sessió" @click="handleLogout">
-              <ion-icon :icon="logOutOutline" aria-hidden="true" />
+              <ion-icon :icon="iconLogout" aria-hidden="true" />
             </button>
           </div>
 
@@ -213,7 +221,7 @@ const handleLogout = async (): Promise<void> => {
           <template v-if="avatarError" #alerts>
             <AppAlert variant="danger">
               <template #icon>
-                <ion-icon :icon="alertCircleOutline" aria-hidden="true" />
+                <ion-icon :icon="iconError" aria-hidden="true" />
               </template>
               {{ avatarError }}
             </AppAlert>

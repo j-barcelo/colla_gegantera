@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref } from 'vue';
 import type { NotificationVariant } from '../../composables/useNotification';
+import { materialPaths } from '../../icons';
 
 interface Props {
   id?: string;
@@ -69,8 +70,8 @@ onUnmounted(() => {
         aria-label="Tancar notificació"
         @click="handleClose"
       >
-        <svg class="c-notification__close-icon" viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M18 6L6 18M6 6l12 12" />
+        <svg class="c-notification__close-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path :d="materialPaths.close" />
         </svg>
       </button>
     </div>
