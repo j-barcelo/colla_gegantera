@@ -197,7 +197,13 @@ const handleLogout = async (): Promise<void> => {
               <p class="c-profile-header__handle">{{ userHandle }}</p>
             </div>
 
-            <button type="button" class="c-profile-header__logout" aria-label="Tancar la sessió" @click="handleLogout">
+            <button
+              type="button"
+              class="c-profile-header__logout"
+              data-testid="logout-btn"
+              aria-label="Tancar la sessió"
+              @click="handleLogout"
+            >
               <ion-icon :icon="iconLogout" aria-hidden="true" />
             </button>
           </div>

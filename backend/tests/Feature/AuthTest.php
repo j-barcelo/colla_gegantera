@@ -40,11 +40,7 @@ class AuthTest extends TestCase {
         $response = $this->postJson(self::REGISTER_URL, $payload);
 
         $response->assertCreated()
-            ->assertJsonStructure([
-                'user' => ['id', 'name', 'surname', 'email', 'role'],
-                'token',
-                'token_type',
-            ])
+            ->assertJsonStructure(['user' => ['id', 'name', 'surname', 'email', 'role'], 'token', 'token_type'])
             ->assertJsonPath('user.email', self::TEST_EMAIL)
             ->assertJsonPath('user.name', self::TEST_NAME)
             ->assertJsonPath('user.surname', self::TEST_SURNAME)
@@ -111,11 +107,7 @@ class AuthTest extends TestCase {
         ]);
 
         $response->assertOk()
-            ->assertJsonStructure([
-                'user' => ['id', 'name', 'email', 'role'],
-                'token',
-                'token_type',
-            ])
+            ->assertJsonStructure(['user' => ['id', 'name', 'email', 'role'], 'token', 'token_type'])
             ->assertJsonPath('user.id', $user->id)
             ->assertJsonPath('user.role', 'member')
             ->assertJsonPath('token_type', self::BEARER_TOKEN);

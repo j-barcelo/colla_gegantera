@@ -36,7 +36,13 @@ const handleClose = (): void => {
       <div class="c-avatar-preview-modal__inner">
         <header class="c-avatar-preview-modal__header">
           <h2 id="avatar-modal-title" class="c-avatar-preview-modal__title">Previsualització de la imatge</h2>
-          <button type="button" class="c-avatar-preview-modal__close" aria-label="Tancar" @click="handleClose">
+          <button
+            type="button"
+            class="c-avatar-preview-modal__close"
+            data-testid="close-modal-btn"
+            aria-label="Tancar"
+            @click="handleClose"
+          >
             <ion-icon :icon="iconClose" aria-hidden="true" />
           </button>
         </header>
@@ -48,16 +54,34 @@ const handleClose = (): void => {
 
           <div class="c-avatar-preview-modal__preview-wrap">
             <UserAvatar :src="previewUrl" :alt="altText" size="xl" />
-            <AppButton type="button" variant="outline-light" :disabled="isLoading" @click="emit('change-file')">
+            <AppButton
+              type="button"
+              variant="outline-light"
+              data-testid="change-file-btn"
+              :disabled="isLoading"
+              @click="emit('change-file')"
+            >
               Triar una altra imatge
             </AppButton>
           </div>
 
           <div class="c-avatar-preview-modal__actions">
-            <AppButton type="button" variant="outline-light" :disabled="isLoading" @click="handleClose">
+            <AppButton
+              type="button"
+              variant="outline-light"
+              data-testid="cancel-btn"
+              :disabled="isLoading"
+              @click="handleClose"
+            >
               Cancel·lar
             </AppButton>
-            <AppButton type="button" variant="outline-light" :disabled="isLoading" @click="emit('confirm')">
+            <AppButton
+              type="button"
+              variant="outline-light"
+              data-testid="confirm-save-btn"
+              :disabled="isLoading"
+              @click="emit('confirm')"
+            >
               {{ isLoading ? 'Desant...' : 'Desar imatge' }}
             </AppButton>
           </div>
@@ -68,4 +92,3 @@ const handleClose = (): void => {
 </template>
 
 <style lang="scss" src="./AvatarPreviewModal.scss"></style>
-

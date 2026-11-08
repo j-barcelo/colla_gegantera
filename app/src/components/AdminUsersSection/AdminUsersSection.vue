@@ -277,7 +277,7 @@ onMounted(async () => {
 
     <!-- Botó per afegir nou usuari -->
     <div class="c-admin-users-section__action-bar">
-      <button type="button" class="c-admin-users-section__add-btn" @click="handleAddNewUser">
+      <button type="button" class="c-admin-users-section__add-btn" data-testid="add-user-btn" @click="handleAddNewUser">
         <ion-icon :icon="iconPersonAdd" class="c-admin-users-section__add-icon" />
         <span>Afegir nou usuari</span>
       </button>
@@ -303,6 +303,7 @@ onMounted(async () => {
           <button
             type="button"
             class="c-admin-users-section__item-btn"
+            data-testid="user-item-btn"
             :aria-label="`Consultar usuari ${user.name}`"
             @click="openUserModal(user)"
           >

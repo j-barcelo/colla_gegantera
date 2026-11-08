@@ -85,9 +85,7 @@ class UserController extends Controller {
 
         $this->applyRolesUpdate($user, $validated);
 
-        if (!empty($validated)) {
-            $user->fill($validated);
-        }
+        if (!empty($validated)) $user->fill($validated);
 
         $user->save();
 
@@ -104,9 +102,7 @@ class UserController extends Controller {
         $cleanId = (int) str_replace('pending_', '', $id);
 
         if ((int) $request->user()?->id === $cleanId) {
-            return response()->json([
-                'message' => 'No et pots eliminar a tu mateix.',
-            ], 403);
+            return response()->json(['message' => 'No et pots eliminar a tu mateix.'], 403);
         }
 
         $user = User::findOrFail($cleanId);
@@ -123,19 +119,13 @@ class UserController extends Controller {
     }
 
     private function checkSelfAdminProtection(Request $request, User $user, array $validated): ?JsonResponse {
-        if ((int) $request->user()?->id !== (int) $user->id) {
-            return null;
-        }
+        if ((int) $request->user()?->id !== (int) $user->id) return null;
 
-        if (isset($validated['roles']) && !$this->hasAdminRole($validated['roles'])) {
+        $hasInvalidRoles = isset($validated['roles']) && !$this->hasAdminRole($validated['roles']);
+        $hasInvalidRole = isset($validated['role']) && !in_array(strtolower((string) $validated['role']), ['admin', Role::ADMIN_SLUG], true);
+
+        if ($hasInvalidRoles || $hasInvalidRole) {
             return response()->json(['message' => self::SELF_ADMIN_PROTECTION_MESSAGE], 403);
-        }
-
-        if (isset($validated['role'])) {
-            $roleVal = strtolower((string) $validated['role']);
-            if ($roleVal !== 'admin' && $roleVal !== Role::ADMIN_SLUG) {
-                return response()->json(['message' => self::SELF_ADMIN_PROTECTION_MESSAGE], 403);
-            }
         }
 
         return null;

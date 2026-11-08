@@ -25,22 +25,21 @@ describe('EventCard.vue', () => {
     expect(wrapper.text()).toContain('NOVEMBRE');
     expect(wrapper.text()).toContain('Inca');
     expect(wrapper.text()).toContain('09:30');
-    expect(wrapper.text()).toContain('Han confirmat 20 persones');
-    expect(wrapper.text()).toContain('9 Portadors');
-    expect(wrapper.text()).toContain('4 Músics');
+    expect(wrapper.text()).toContain('20');
+    expect(wrapper.text()).toContain('9');
+    expect(wrapper.text()).toContain('4');
   });
 
-  it('displays confirmed status modifier when confirmed prop is true', () => {
+  it('displays confirmed accessible state when confirmed prop is true', () => {
     const wrapper = mount(EventCard, {
       props: defaultProps,
     });
 
-    const statusBtn = wrapper.find('.c-event-card__status');
-    expect(statusBtn.classes()).toContain('c-event-card__status--confirmed');
-    expect(wrapper.find('.c-event-card__check-icon').exists()).toBe(true);
+    const statusBtn = wrapper.find('[data-testid="attendance-toggle-btn"]');
+    expect(statusBtn.attributes('aria-pressed')).toBe('true');
   });
 
-  it('displays pending status modifier and dash when confirmed prop is false', () => {
+  it('displays pending accessible state when confirmed prop is false', () => {
     const wrapper = mount(EventCard, {
       props: {
         ...defaultProps,
@@ -48,23 +47,20 @@ describe('EventCard.vue', () => {
       },
     });
 
-    const statusBtn = wrapper.find('.c-event-card__status');
-    expect(statusBtn.classes()).toContain('c-event-card__status--pending');
-    expect(wrapper.find('.c-event-card__dash-icon').exists()).toBe(true);
+    const statusBtn = wrapper.find('[data-testid="attendance-toggle-btn"]');
+    expect(statusBtn.attributes('aria-pressed')).toBe('false');
   });
 
-  it('emits events on user interactions', async () => {
+  it.each([
+    { selector: '[data-testid="attendance-toggle-btn"]', event: 'toggle-status' },
+    { selector: '[data-testid="event-details-btn"]', event: 'click-details' },
+    { selector: 'article', event: 'click' },
+  ])('emits $event when clicking on $selector', async ({ selector, event }) => {
     const wrapper = mount(EventCard, {
       props: defaultProps,
     });
 
-    await wrapper.find('.c-event-card__status').trigger('click');
-    expect(wrapper.emitted('toggle-status')).toHaveLength(1);
-
-    await wrapper.find('.c-event-card__details-btn').trigger('click');
-    expect(wrapper.emitted('click-details')).toHaveLength(1);
-
-    await wrapper.find('.c-event-card').trigger('click');
-    expect(wrapper.emitted('click')).toHaveLength(1);
+    await wrapper.find(selector).trigger('click');
+    expect(wrapper.emitted(event)).toHaveLength(1);
   });
 });

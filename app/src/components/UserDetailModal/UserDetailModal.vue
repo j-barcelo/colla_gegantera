@@ -43,7 +43,13 @@ const userHandle = computed(() => {
               <p class="c-profile-header__handle">{{ userHandle }}</p>
             </div>
 
-            <button type="button" class="c-profile-header__logout" aria-label="Tancar" @click="emit('close')">
+            <button
+              type="button"
+              class="c-profile-header__logout"
+              data-testid="close-modal-btn"
+              aria-label="Tancar"
+              @click="emit('close')"
+            >
               <ion-icon :icon="iconClose" aria-hidden="true" />
             </button>
           </div>

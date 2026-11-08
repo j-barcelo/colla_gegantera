@@ -15,9 +15,7 @@ class InstallerService {
      */
     public function isInstalled(): bool {
         try {
-            if (!Schema::hasTable('users') || !Schema::hasTable('roles') || !Schema::hasTable('role_user')) {
-                return false;
-            }
+            if (!Schema::hasTable('users') || !Schema::hasTable('roles') || !Schema::hasTable('role_user')) return false;
 
             return User::whereHas('roles', fn ($q) => $q->whereIn('slug', ['admin', Role::ADMIN_SLUG])->orWhereIn('name', ['admin', Role::ADMIN_NAME]))->exists();
         } catch (\Throwable) {

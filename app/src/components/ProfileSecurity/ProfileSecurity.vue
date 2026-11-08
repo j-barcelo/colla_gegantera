@@ -20,6 +20,7 @@ const emit = defineEmits<{
       type="button"
       variant="outline-primary"
       class="c-profile-security__btn"
+      data-testid="change-password-btn"
       :disabled="disabled"
       @click="emit('changePassword')"
     >

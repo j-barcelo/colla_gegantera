@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { materialPaths } from '../../icons';
 import { computed, ref } from 'vue';
+import { materialPaths } from '../../icons';
 
 interface Props {
   modelValue?: string;
@@ -96,6 +96,7 @@ defineExpose({
         :name="name || id"
         :autocomplete="resolvedAutocomplete"
         :placeholder="placeholder"
+        :aria-invalid="!!displayError"
         class="c-input__control"
         :disabled="disabled"
         @blur="onBlur"
@@ -105,6 +106,7 @@ defineExpose({
         v-if="isPassword"
         type="button"
         class="c-input__toggle-pw"
+        data-testid="toggle-password-visibility"
         :aria-label="showPassword ? 'Amaga la contrasenya' : 'Mostra la contrasenya'"
         @click="showPassword = !showPassword"
       >

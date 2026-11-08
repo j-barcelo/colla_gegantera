@@ -56,7 +56,13 @@ onUnmounted(() => {
     <ion-header v-show="!isModalOpen" class="ion-no-border">
       <ion-toolbar class="c-admin-page__toolbar">
         <ion-buttons slot="start">
-          <ion-button fill="clear" class="c-admin-page__back-btn" aria-label="Tornar a l'inici" @click="handleGoBack">
+          <ion-button
+            fill="clear"
+            class="c-admin-page__back-btn"
+            data-testid="back-btn"
+            aria-label="Tornar a l'inici"
+            @click="handleGoBack"
+          >
             <ion-icon slot="icon-only" :icon="iconArrowBack" />
           </ion-button>
         </ion-buttons>

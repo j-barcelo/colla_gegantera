@@ -77,5 +77,9 @@ export default defineConfig({
     globals: true,
     environment: 'jsdom',
     include: ['tests/unit/**/*.spec.ts', 'src/**/*.spec.ts', '../shared/src/**/*.spec.ts'],
+    coverage: {
+      reporter: ['text', 'lcov', 'html'],
+      exclude: ['src/main.ts', '**/*.d.ts', '**/*.scss', '**/*.css'],
+    },
   },
 });

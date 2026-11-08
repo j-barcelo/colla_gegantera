@@ -37,6 +37,8 @@ const emit = defineEmits<{
         type="button"
         class="c-event-card__status"
         :class="confirmed ? 'c-event-card__status--confirmed' : 'c-event-card__status--pending'"
+        data-testid="attendance-toggle-btn"
+        :aria-pressed="confirmed"
         :aria-label="
           confirmed
             ? 'Assistència confirmada. Prem per canviar estat'
@@ -53,13 +55,7 @@ const emit = defineEmits<{
         >
           <path :d="materialPaths.check" />
         </svg>
-        <svg
-          v-else
-          class="c-event-card__dash-icon"
-          viewBox="0 0 24 24"
-          fill="currentColor"
-          aria-hidden="true"
-        >
+        <svg v-else class="c-event-card__dash-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
           <path :d="materialPaths.remove" />
         </svg>
       </button>
@@ -93,6 +89,7 @@ const emit = defineEmits<{
         type="button"
         variant="outline-light"
         class="c-event-card__details-btn"
+        data-testid="event-details-btn"
         aria-label="Veure més detalls"
         @click.stop="emit('click-details')"
       >

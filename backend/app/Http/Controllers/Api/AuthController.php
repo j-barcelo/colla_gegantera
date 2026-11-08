@@ -26,9 +26,7 @@ class AuthController extends Controller {
     public function register(RegisterRequest $request): JsonResponse {
         $validated = $request->validated();
 
-        $user = User::where('email', $validated['email'])
-            ->where('status', UserStatus::Pending)
-            ->firstOrFail();
+        $user = User::where('email', $validated['email'])->where('status', UserStatus::Pending)->firstOrFail();
 
         $user->update([
             'name' => $validated['name'],

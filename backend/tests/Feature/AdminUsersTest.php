@@ -54,20 +54,14 @@ class AdminUsersTest extends TestCase {
         $response = $this->getJson(self::ADMIN_USERS_URL);
 
         $response->assertOk()
-            ->assertJsonStructure([
-                'data' => [
-                    '*' => ['id', 'name', 'surname', 'email', 'role', 'avatar', 'is_pending'],
-                ],
-            ])
+            ->assertJsonStructure(['data' => ['*' => ['id', 'name', 'surname', 'email', 'role', 'avatar', 'is_pending']]])
             ->assertJsonCount(3, 'data');
     }
 
     public function test_admin_can_allow_new_email(): void {
         Sanctum::actingAs($this->adminUser);
 
-        $response = $this->postJson(self::ADMIN_USERS_URL, [
-            'email' => self::TEST_NEW_EMAIL,
-        ]);
+        $response = $this->postJson(self::ADMIN_USERS_URL, ['email' => self::TEST_NEW_EMAIL]);
 
         $response->assertCreated()
             ->assertJsonPath('data.email', self::TEST_NEW_EMAIL)
@@ -82,9 +76,7 @@ class AdminUsersTest extends TestCase {
     public function test_admin_cannot_allow_already_registered_or_allowed_email(): void {
         Sanctum::actingAs($this->adminUser);
 
-        $response = $this->postJson(self::ADMIN_USERS_URL, [
-            'email' => $this->adminUser->email,
-        ]);
+        $response = $this->postJson(self::ADMIN_USERS_URL, ['email' => $this->adminUser->email]);
 
         $response->assertUnprocessable();
     }
@@ -149,5 +141,53 @@ class AdminUsersTest extends TestCase {
 
         $response->assertForbidden();
         $this->assertDatabaseHas('users', ['id' => $this->adminUser->id]);
+    }
+
+    public function test_admin_can_allow_email_with_explicit_roles(): void {
+        Sanctum::actingAs($this->adminUser);
+
+        $response = $this->postJson(self::ADMIN_USERS_URL, [
+            'email' => 'musics@gegants.cat',
+            'roles' => ['Músics', 'Grallers'],
+        ]);
+
+        $response->assertCreated()
+            ->assertJsonPath('data.email', 'musics@gegants.cat')
+            ->assertJsonCount(2, 'data.roles');
+    }
+
+    public function test_admin_can_update_user_roles_with_array(): void {
+        $member = User::factory()->create();
+        Sanctum::actingAs($this->adminUser);
+
+        $response = $this->putJson(self::ADMIN_USERS_URL . '/' . $member->id, [
+            'roles' => ['Portadors', 'Caps de Colla'],
+        ]);
+
+        $response->assertOk()
+            ->assertJsonCount(2, 'data.roles');
+    }
+
+    public function test_admin_can_downgrade_another_admin_to_member(): void {
+        $otherAdmin = User::factory()->admin()->create();
+        Sanctum::actingAs($this->adminUser);
+
+        $response = $this->putJson(self::ADMIN_USERS_URL . '/' . $otherAdmin->id, [
+            'role' => 'member',
+        ]);
+
+        $response->assertOk();
+        $this->assertFalse($otherAdmin->fresh()->isAdmin());
+    }
+
+    public function test_admin_can_delete_registered_member(): void {
+        $member = User::factory()->create();
+        Sanctum::actingAs($this->adminUser);
+
+        $response = $this->deleteJson(self::ADMIN_USERS_URL . '/' . $member->id);
+
+        $response->assertOk()
+            ->assertJsonPath('message', 'Usuari eliminat correctament.');
+        $this->assertDatabaseMissing('users', ['id' => $member->id, 'deleted_at' => null]);
     }
 }

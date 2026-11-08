@@ -81,7 +81,13 @@ const handleSubmit = (): void => {
       <div class="c-change-password-modal__inner">
         <header class="c-change-password-modal__header">
           <h2 id="password-modal-title" class="c-change-password-modal__title">Modificar contrasenya</h2>
-          <button type="button" class="c-change-password-modal__close" aria-label="Tancar" @click="handleClose">
+          <button
+            type="button"
+            class="c-change-password-modal__close"
+            data-testid="close-modal-btn"
+            aria-label="Tancar"
+            @click="handleClose"
+          >
             <ion-icon :icon="iconClose" aria-hidden="true" />
           </button>
         </header>
@@ -128,10 +134,16 @@ const handleSubmit = (): void => {
           />
 
           <div class="c-change-password-modal__actions">
-            <AppButton type="button" variant="outline-light" :disabled="isSaving" @click="handleClose">
+            <AppButton
+              type="button"
+              variant="outline-light"
+              data-testid="cancel-btn"
+              :disabled="isSaving"
+              @click="handleClose"
+            >
               Cancel·lar
             </AppButton>
-            <AppButton type="submit" variant="outline-primary" :disabled="isSaving">
+            <AppButton type="submit" variant="outline-primary" data-testid="save-btn" :disabled="isSaving">
               {{ isSaving ? 'Desant...' : 'Desar contrasenya' }}
             </AppButton>
           </div>

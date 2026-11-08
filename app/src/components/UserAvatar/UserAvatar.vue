@@ -62,6 +62,7 @@ defineExpose({
       <button
         type="button"
         class="c-user-avatar__edit-badge"
+        data-testid="edit-avatar-badge"
         aria-label="Canviar la fotografia de perfil"
         :disabled="disabled"
         @click="openFilePicker"

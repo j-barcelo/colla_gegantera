@@ -110,7 +110,7 @@ onUnmounted(() => {
             class="c-home-page__menu-item"
             :class="{ 'c-home-page__menu-item--active': activeFilter === f.id }"
           >
-            <button type="button" class="c-home-page__menu-btn" @click="selectFilter(f.id)">
+            <button type="button" class="c-home-page__menu-btn" :data-filter-id="f.id" @click="selectFilter(f.id)">
               {{ f.label }}
             </button>
           </li>

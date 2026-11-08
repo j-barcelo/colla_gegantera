@@ -1,4 +1,5 @@
 import js from '@eslint/js';
+import vitest from '@vitest/eslint-plugin';
 import prettierConfig from 'eslint-config-prettier';
 import pluginVue from 'eslint-plugin-vue';
 import globals from 'globals';
@@ -22,6 +23,7 @@ export default [
       '**/.output/**',
       '**/backend/**',
       '**/public/**',
+      '**/coverage/**',
       '**/dev-dist/**',
       '**/cypress/**',
       '**/*.d.ts',
@@ -47,6 +49,20 @@ export default [
       'vue/no-deprecated-slot-attribute': 'off',
       '@typescript-eslint/no-explicit-any': 'warn',
       '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
+    },
+  },
+  {
+    files: ['**/*.spec.{ts,js}', '**/*.test.{ts,js}'],
+    plugins: {
+      vitest,
+    },
+    rules: {
+      ...vitest.configs.recommended.rules,
+      'vitest/no-conditional-expect': 'error',
+      'vitest/no-conditional-in-test': 'error',
+      'vitest/no-focused-tests': 'error',
+      'vitest/no-standalone-expect': 'error',
+      'vitest/no-disabled-tests': 'warn',
     },
   },
   prettierConfig,

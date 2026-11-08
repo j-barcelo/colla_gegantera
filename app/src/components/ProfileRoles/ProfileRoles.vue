@@ -40,6 +40,7 @@ const assignedRoles = computed<string[]>(() => {
         v-if="editable"
         type="button"
         class="c-profile-roles__edit-btn"
+        data-testid="edit-roles-btn"
         aria-label="Modificar rols"
         @click="emit('edit')"
       >

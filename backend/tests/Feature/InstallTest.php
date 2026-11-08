@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
+use Web\Services\InstallerService;
 
 class InstallTest extends TestCase {
     use RefreshDatabase;
@@ -98,5 +99,22 @@ class InstallTest extends TestCase {
         ]);
 
         $response->assertRedirect(self::INSTALL_URL)->assertSessionHasErrors(['db_host', 'db_port', 'db_database', 'db_username']);
+    }
+
+    public function test_install_handles_installer_service_exceptions(): void {
+        $mockInstaller = $this->createMock(InstallerService::class);
+        $mockInstaller->method('install')->willThrowException(new \RuntimeException('Connexió fallida'));
+        $this->app->instance(InstallerService::class, $mockInstaller);
+
+        $response = $this->from(self::INSTALL_URL)->post(self::INSTALL_URL, [
+            'db_connection' => 'sqlite',
+            'admin_name' => self::ADMIN_NAME,
+            'admin_email' => self::ADMIN_EMAIL,
+            'admin_password' => self::ADMIN_PASSWORD,
+            'admin_password_confirmation' => self::ADMIN_PASSWORD,
+        ]);
+
+        $response->assertRedirect(self::INSTALL_URL)
+            ->assertSessionHasErrors('db_connection');
     }
 }

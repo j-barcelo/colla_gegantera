@@ -115,7 +115,13 @@ const handleSubmit = (): void => {
       <div class="c-edit-user-modal__inner">
         <header class="c-edit-user-modal__header">
           <h2 id="edit-user-title" class="c-edit-user-modal__title">{{ title }}</h2>
-          <button type="button" class="c-edit-user-modal__close" aria-label="Tancar" @click="handleClose">
+          <button
+            type="button"
+            class="c-edit-user-modal__close"
+            data-testid="close-modal-btn"
+            aria-label="Tancar"
+            @click="handleClose"
+          >
             <ion-icon :icon="iconClose" aria-hidden="true" />
           </button>
         </header>
@@ -182,10 +188,16 @@ const handleSubmit = (): void => {
           />
 
           <div class="c-edit-user-modal__actions">
-            <AppButton type="button" variant="outline-light" :disabled="isSaving" @click="handleClose">
+            <AppButton
+              type="button"
+              variant="outline-light"
+              data-testid="cancel-btn"
+              :disabled="isSaving"
+              @click="handleClose"
+            >
               Cancel·lar
             </AppButton>
-            <AppButton type="submit" variant="outline-light" :disabled="isSaving">
+            <AppButton type="submit" variant="outline-light" data-testid="save-btn" :disabled="isSaving">
               {{ isSaving ? 'Desant...' : 'Desar canvis' }}
             </AppButton>
           </div>
